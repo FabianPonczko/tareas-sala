@@ -1,0 +1,110 @@
+const express = require('express');
+const http = require('http');
+const cors = require('cors');
+const mongoose = require('mongoose');
+require('dotenv').config();
+
+const { Server } =
+  require('socket.io');
+
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
+const server =
+  http.createServer(app);
+
+// =====================================
+// ROUTES
+// =====================================
+
+const authRoutes =
+  require('./routes/auth.routes');
+
+const tareasRoutes =
+  require('./routes/tareas.routes');
+
+const chatRoutes =
+  require('./routes/chat.routes');
+
+const io = new Server(server, {
+  cors: {
+    origin: '*',
+  },
+});
+
+global.io = io;
+
+io.on(
+  'connection',
+  (socket) => {
+    console.log(
+      'Cliente conectado'
+    );
+
+    socket.on(
+      'disconnect',
+      () => {
+        console.log(
+          'Cliente desconectado'
+        );
+      }
+    );
+  }
+);
+
+
+app.use((err, req, res, next) => {
+  console.error("🔥 ERROR GLOBAL:", err);
+  res.status(500).json({
+    message: "Error interno del servidor",
+    error: err.message
+  });
+});
+
+
+// =====================================
+// ROUTES
+// =====================================
+
+
+
+app.use(
+  '/api/auth',
+  authRoutes
+);
+
+app.use(
+  '/api/tareas',
+  tareasRoutes
+);
+
+app.use(
+  '/api/chat',
+  chatRoutes
+);
+
+app.get('/', (req, res) => {
+  res.send(
+    'API funcionando'
+  );
+});
+
+// mongoose
+//   .connect(process.env.MONGO_URI)
+//   .then(() => {
+//     server.listen(3000, () => console.log("Server en puerto 3000"));
+//   });
+
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log("MongoDB conectado");
+    server.listen(3000, () =>
+      console.log("Server en puerto 3000")
+    );
+  })
+  .catch((err) => {
+    console.error("❌ Error MongoDB:", err);
+  });

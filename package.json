@@ -1,0 +1,8 @@
+{
+  "name": "proyecto-monorepo",
+  "private": true,
+  "scripts": {
+    "backend": "cd backend && npm run dev",
+    "mobile": "cd mobile-app && npm start"
+  }
+}

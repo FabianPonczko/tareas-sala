@@ -1,0 +1,79 @@
+
+# =========================
+# DEPENDENCIAS
+# =========================
+node_modules/
+**/node_modules/
+
+# =========================
+# LOGS
+# =========================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# =========================
+# ENV FILES
+# =========================
+.env
+.env.*
+**/.env
+**/.env.*
+
+# =========================
+# BUILD / DIST
+# =========================
+dist/
+build/
+.expo/
+.web-build/
+
+# =========================
+# MOBILE (EXPO / REACT NATIVE)
+# =========================
+.expo-shared/
+expo-env.d.ts
+.expo/
+
+# =========================
+# ANDROID / IOS
+# =========================
+android/
+ios/
+*.keystore
+*.jks
+
+# =========================
+# BACKEND SPECIFIC
+# =========================
+backend/dist/
+backend/uploads/
+
+# =========================
+# CACHE
+# =========================
+.cache/
+.tmp/
+.parcel-cache/
+
+# =========================
+# IDE
+# =========================
+.vscode/
+.idea/
+
+# =========================
+# OS
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# OPTIONAL: MONOREPO SAFETY
+# =========================
+**/coverage/
+**/.turbo/
+
+backend/serviceAccountKey.json
