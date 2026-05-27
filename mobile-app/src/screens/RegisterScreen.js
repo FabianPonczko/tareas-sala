@@ -29,7 +29,7 @@ import {
 // =====================================
 
 const API_URL =
-  'http://10.24.138.167:3000/api/auth/register';
+  'https://tareas-sala.onrender.com/api/auth/register';
 
 
 // =====================================

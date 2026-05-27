@@ -22,7 +22,7 @@ import { useAuth } from '../context/AuthContext';
 // =====================================
 
 const API_URL =
-  'http://10.24.138.167:3000/api/tareas/historial';
+  'https://tareas-sala.onrender.com/api/tareas/historial';
 
 
 // =====================================

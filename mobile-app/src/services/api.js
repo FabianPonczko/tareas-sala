@@ -208,7 +208,7 @@ import axios from 'axios';
 // http://192.168.0.15:3000/api
 
 const BASE_URL =
-  'http://10.24.138.167:3000/api';
+  'https://tareas-sala.onrender.com/api';
 
 
 // =====================================

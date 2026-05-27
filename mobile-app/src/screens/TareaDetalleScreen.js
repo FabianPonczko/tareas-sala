@@ -27,7 +27,7 @@ import { socket } from '../services/socket';
 // =====================================
 
 const API_URL =
-  'http://10.24.138.167:3000/api/tareas';
+  'https://tareas-sala.onrender.com/api/tareas';
 
 
 // =====================================
