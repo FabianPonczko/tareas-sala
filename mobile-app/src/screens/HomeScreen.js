@@ -41,8 +41,11 @@ export default function HomeScreen() {
 
     const logout = async () => {
   await AsyncStorage.removeItem('token');
-  // setToken(null);
-  // setUsuario(null);
+  //  setToken(null);
+  //  setUsuario(null);
+  navigation.navigate(
+          'Home'
+        );
 };
 
 

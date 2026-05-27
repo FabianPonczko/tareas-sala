@@ -28,6 +28,9 @@ const tareasRoutes =
 const chatRoutes =
   require('./routes/chat.routes');
 
+const catalogosRoutes =
+  require('./routes/catalogos.routes');
+
 const io = new Server(server, {
   cors: {
     origin: '*',
@@ -90,6 +93,11 @@ app.get('/', (req, res) => {
     'API funcionando'
   );
 });
+
+app.use(
+  '/api/catalogos',
+  catalogosRoutes
+);
 
 // mongoose
 //   .connect(process.env.MONGO_URI)

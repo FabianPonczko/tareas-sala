@@ -1,13 +1,29 @@
 const mongoose = require('mongoose');
 
-const tareaPrefijadaSchema =
-  new mongoose.Schema({
-    productoTrabajo: String,
+const tareaPrefijadaSchema = new mongoose.Schema({
+  sabor: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Sabor',
+    required: true,
+  },
 
-    ubicacionTanque: String,
+  tanque: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Tanque',
+    required: true,
+  },
 
-    equipoMaquina: String,
-  });
+  disolutor: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Disolutor',
+    required: true,
+  },
+
+  activo: {
+    type: Boolean,
+    default: true,
+  },
+});
 
 module.exports = mongoose.model(
   'TareaPrefijada',
