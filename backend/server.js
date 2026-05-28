@@ -229,27 +229,22 @@ io.on(
     // REGISTRAR USUARIO
     // =====================================
 
-    socket.on(
+  socket.on(
   'registrar_usuario',
   (usuario) => {
+
+    if (!usuario?._id) {
+      return;
+    }
 
     usuariosConectados.set(
       usuario._id,
       {
-        socketId:
-          socket.id,
-
-        _id:
-          usuario._id,
-
-        nombre:
-          usuario.nombre,
-
-        rol:
-          usuario.rol,
-
-        turnoActual:
-          usuario.turnoActual,
+        socketId: socket.id,
+        _id: usuario._id,
+        nombre: usuario.nombre,
+        rol: usuario.rol,
+        turnoActual: usuario.turnoActual,
       }
     );
 
@@ -262,6 +257,11 @@ io.on(
 
     io.emit(
       'usuarios_conectados_count',
+      usuariosConectados.size
+    );
+
+    console.log(
+      '👥 Online:',
       usuariosConectados.size
     );
   }
