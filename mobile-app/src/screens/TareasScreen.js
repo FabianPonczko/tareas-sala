@@ -479,6 +479,7 @@ import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 
 import { socket } from '../services/socket';
+import ChatBox from '../components/ChatBox';
 
 
 // =====================================
@@ -667,15 +668,21 @@ export default function TareasScreen() {
   // FILTRAR TURNO
   // =====================================
 
+  const hoy = new Date()
+        .toISOString()
+        .split('T')[0]
+  
   const tareasTurno =
-  tareas.filter(
+   tareas.filter(
     (t) =>
       t.turno ===
         usuario?.turnoActual &&
       t.estado !==
-        'FINALIZADO'
-  );
-
+        'FINALIZADO' &&
+        hoy == t.createdAt.split("T")[0]
+        
+      );
+     
 
   // =====================================
   // LOADING
@@ -701,7 +708,7 @@ export default function TareasScreen() {
   // EMPTY
   // =====================================
 
-  if (usuario?.rol !== "ADMIN" && !tareasTurno.length) {
+  if (!tareasTurno.length) {
 
     return (
       <View
@@ -906,10 +913,10 @@ export default function TareasScreen() {
                 }
               >
                 <Text style={styles.buttonText}>
-                  FINALIZAR
+                  FINALIZAR 
                 </Text>
               </TouchableOpacity>
-
+               <ChatBox usuario={usuario} tareaId={item.tarea?._id} token={token} /> 
             </View>
 
           </View>

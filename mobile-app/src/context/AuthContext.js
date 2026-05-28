@@ -285,14 +285,10 @@ export const AuthProvider = ({
         usuario,
         token,
         loading,
-
         login,
         logout,
-
         actualizarTurno,
-
         refreshUsuario,
-
         isAuthenticated:
           !!token,
       }}

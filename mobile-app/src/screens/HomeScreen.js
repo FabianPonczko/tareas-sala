@@ -23,7 +23,7 @@ export default function HomeScreen() {
 
   const {
     usuario,
-    // logout,
+    
     actualizarTurno,
   } = useAuth();
 
@@ -39,13 +39,11 @@ export default function HomeScreen() {
       );
     };
 
-    const logout = async () => {
-  await AsyncStorage.removeItem('token');
+    const salir = async () => {
+      await AsyncStorage.removeItem('token');
   //  setToken(null);
   //  setUsuario(null);
-  navigation.navigate(
-          'Home'
-        );
+  
 };
 
 
@@ -282,8 +280,8 @@ export default function HomeScreen() {
                 '#DC3545',
             },
           ]}
-          onPress={logout}
-        >
+          onPress= {salir} >
+
           <Text
             style={
               styles.actionText

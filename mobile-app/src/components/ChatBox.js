@@ -26,7 +26,7 @@ import { socket } from '../services/socket';
 // =====================================
 
 const API_URL =
-  'http://TU_IP_LOCAL:3000/api/chat';
+  'https://tareas-sala.onrender.com/api/chat';
 
 
 // =====================================

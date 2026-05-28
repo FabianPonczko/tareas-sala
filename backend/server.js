@@ -58,6 +58,43 @@ io.on(
 );
 
 
+
+// Almacena los usuarios conectados (userId: socketId)
+const usuariosConectados = new Map();
+
+io.on('connection', (socket) => {
+  console.log('Cliente conectado:', socket.id);
+
+  // 1. Registrar al usuario cuando inicia sesión/se conecta
+  socket.on('registrar_usuario', (userId) => {
+    usuariosConectados.set(userId, socket.id);
+    
+    // Enviar lista actualizada a todos los clientes
+    io.emit('usuarios_conectados', Array.from(usuariosConectados.keys()));
+    console.log(`Usuario ${userId} registrado.`);
+  });
+
+  // 2. Manejar la desconexión
+  socket.on('disconnect', () => {
+    console.log('Cliente desconectado:', socket.id);
+    
+    // Buscar y eliminar al usuario que correspondía a este socket
+    for (let [userId, socketId] of usuariosConectados.entries()) {
+      if (socketId === socket.id) {
+        usuariosConectados.delete(userId);
+        break;
+      }
+    }
+
+    // Enviar lista actualizada a todos los clientes
+    io.emit('usuarios_conectados', Array.from(usuariosConectados.keys()));
+  });
+});
+//
+
+
+
+
 app.use((err, req, res, next) => {
   console.error("🔥 ERROR GLOBAL:", err);
   res.status(500).json({

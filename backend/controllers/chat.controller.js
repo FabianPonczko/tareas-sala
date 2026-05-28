@@ -1,3 +1,125 @@
+// const MensajeChat =
+//   require('../models/MensajeChat');
+
+
+// // =====================================
+// // OBTENER MENSAJES
+// // =====================================
+
+// const obtenerMensajes =
+//   async (req, res) => {
+
+//     try {
+
+//       const mensajes =
+//         await MensajeChat
+//           .find({
+//             tarea:
+//               req.params
+//                 .tareaId,
+//           })
+//           .sort({
+//             createdAt: 1,
+//           });
+
+//       res.json(mensajes);
+
+//     } catch (error) {
+
+//       console.log(error);
+
+//       res.status(500).json({
+//         message:
+//           'Error obteniendo mensajes',
+//       });
+//     }
+//   };
+
+
+// // =====================================
+// // ENVIAR MENSAJE
+// // =====================================
+
+// const enviarMensaje =
+//   async (req, res) => {
+
+//     try {
+
+//       const {
+//         tarea,
+//         texto,
+//       } = req.body;
+
+//       const nuevoMensaje =
+//         await MensajeChat.create({
+//           tarea,
+
+//           texto,
+
+//           usuario:
+//             req.user.id,
+//         });
+
+//       res.status(201).json(
+//         nuevoMensaje
+//       );
+
+//     } catch (error) {
+
+//       console.log(error);
+
+//       res.status(500).json({
+//         message:
+//           'Error enviando mensaje',
+//       });
+//     }
+//   };
+
+
+// // =====================================
+// // ELIMINAR MENSAJE
+// // =====================================
+
+// const eliminarMensaje =
+//   async (req, res) => {
+
+//     try {
+
+//       await MensajeChat
+//         .findByIdAndDelete(
+//           req.params
+//             .mensajeId
+//         );
+
+//       res.json({
+//         message:
+//           'Mensaje eliminado',
+//       });
+
+//     } catch (error) {
+
+//       console.log(error);
+
+//       res.status(500).json({
+//         message:
+//           'Error eliminando mensaje',
+//       });
+//     }
+//   };
+
+
+// // =====================================
+// // EXPORTS
+// // =====================================
+
+// module.exports = {
+//   obtenerMensajes,
+
+//   enviarMensaje,
+
+//   eliminarMensaje,
+// };
+
 const MensajeChat =
   require('../models/MensajeChat');
 
@@ -17,6 +139,8 @@ const obtenerMensajes =
             tarea:
               req.params
                 .tareaId,
+
+            eliminado: false,
           })
           .sort({
             createdAt: 1,
@@ -47,18 +171,46 @@ const enviarMensaje =
 
       const {
         tarea,
-        texto,
+        mensaje,
       } = req.body;
+
+      if (!mensaje?.trim()) {
+
+        return res
+          .status(400)
+          .json({
+            message:
+              'Mensaje requerido',
+          });
+      }
 
       const nuevoMensaje =
         await MensajeChat.create({
+
           tarea,
 
-          texto,
+          mensaje,
 
-          usuario:
+          usuarioId:
             req.user.id,
+
+          nombreUsuario:
+            req.user.nombre,
+
+          rolUsuario:
+            req.user.rol,
+
+          turno:
+            req.user.turnoActual,
+
         });
+
+      global.io
+        .to(tarea)
+        .emit(
+          'nuevoMensaje',
+          nuevoMensaje
+        );
 
       res.status(201).json(
         nuevoMensaje
@@ -85,11 +237,32 @@ const eliminarMensaje =
 
     try {
 
-      await MensajeChat
-        .findByIdAndDelete(
-          req.params
-            .mensajeId
-        );
+      const mensaje =
+        await MensajeChat
+          .findByIdAndUpdate(
+
+            req.params
+              .mensajeId,
+
+            {
+              eliminado: true,
+
+              eliminadoAt:
+                new Date(),
+            },
+
+            {
+              new: true,
+            }
+          );
+
+      global.io.emit(
+        'mensajeEliminado',
+        {
+          mensajeId:
+            mensaje._id,
+        }
+      );
 
       res.json({
         message:
@@ -113,9 +286,11 @@ const eliminarMensaje =
 // =====================================
 
 module.exports = {
+
   obtenerMensajes,
 
   enviarMensaje,
 
   eliminarMensaje,
+
 };

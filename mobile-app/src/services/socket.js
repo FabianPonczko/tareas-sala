@@ -156,4 +156,22 @@ socket.on(
 // EXPORT DEFAULT
 // =====================================
 
+// este para el front
+// 1. Conectar al servidor
+// const socket = io('http://localhost:3000');
+
+// 2. Enviar el ID del usuario logueado al conectar
+socket.on('connect', () => {
+  const userId = "id_del_usuario_actual"; // Obtén esto de tu auth/context/localStorage
+  socket.emit('registrar_usuario', userId);
+});
+
+// 3. Escuchar la lista de conectados que envía el servidor
+socket.on('usuarios_conectados', (listaUsuarios) => {
+  console.log("Usuarios en línea actualmente:", listaUsuarios);
+  // Aquí puedes actualizar tu estado de React/Vue o manipular el DOM
+});
+
+//
+
 export default socket;
