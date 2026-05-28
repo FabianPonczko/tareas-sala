@@ -5,10 +5,6 @@ import { io } from 'socket.io-client';
 // URL BACKEND
 // =====================================
 
-// Cambiar por IP local
-// Ejemplo:
-// http://192.168.0.15:3000
-
 const SOCKET_URL =
   'https://tareas-sala.onrender.com';
 
@@ -42,9 +38,12 @@ export const socket = io(
 // =====================================
 
 export const connectSocket =
-  (token) => {
+  (
+    token,
+    usuario
+  ) => {
 
-    // Auth JWT socket
+    // JWT
     socket.auth = {
       token,
     };
@@ -52,7 +51,25 @@ export const connectSocket =
     if (
       !socket.connected
     ) {
+
       socket.connect();
+
+      socket.once(
+        'connect',
+        () => {
+
+          console.log(
+            '✅ Socket conectado:',
+            socket.id
+          );
+
+          // REGISTRAR USUARIO
+          socket.emit(
+            'registrar_usuario',
+            usuario
+          );
+        }
+      );
     }
   };
 
@@ -63,9 +80,11 @@ export const connectSocket =
 
 export const disconnectSocket =
   () => {
+
     if (
       socket.connected
     ) {
+
       socket.disconnect();
     }
   };
@@ -77,6 +96,7 @@ export const disconnectSocket =
 
 export const joinTaskRoom =
   (taskId) => {
+
     socket.emit(
       'joinTaskRoom',
       taskId
@@ -90,6 +110,7 @@ export const joinTaskRoom =
 
 export const leaveTaskRoom =
   (taskId) => {
+
     socket.emit(
       'leaveTaskRoom',
       taskId
@@ -102,18 +123,9 @@ export const leaveTaskRoom =
 // =====================================
 
 socket.on(
-  'connect',
-  () => {
-    console.log(
-      '✅ Socket conectado:',
-      socket.id
-    );
-  }
-);
-
-socket.on(
   'disconnect',
   (reason) => {
+
     console.log(
       '❌ Socket desconectado:',
       reason
@@ -124,6 +136,7 @@ socket.on(
 socket.on(
   'connect_error',
   (error) => {
+
     console.log(
       '⚠️ Error socket:',
       error.message
@@ -134,6 +147,7 @@ socket.on(
 socket.on(
   'reconnect',
   (attempt) => {
+
     console.log(
       '🔄 Reconectado:',
       attempt
@@ -144,31 +158,12 @@ socket.on(
 socket.on(
   'reconnect_attempt',
   (attempt) => {
+
     console.log(
       '🔄 Intentando reconectar:',
       attempt
     );
   }
 );
-
-
-
-// =====================================
-// EXPORT DEFAULT
-// =====================================
-
-// este para el front
-// 1. Conectar al servidor
-// const socket = io('http://localhost:3000');
-
-
-
-// 3. Escuchar la lista de conectados que envía el servidor
-// socket.on('usuarios_conectados', (listaUsuarios) => {
-//   console.log("Usuarios en línea actualmente:", listaUsuarios);
-//   // Aquí puedes actualizar tu estado de React/Vue o manipular el DOM
-// });
-
-//
 
 export default socket;

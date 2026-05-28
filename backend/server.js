@@ -230,41 +230,42 @@ io.on(
     // =====================================
 
     socket.on(
-      'registrar_usuario',
-      (userId) => {
+  'registrar_usuario',
+  (usuario) => {
 
-       usuariosConectados.set(
-        socket.usuario.id,
-        {
-          socketId:
-            socket.id,
+    usuariosConectados.set(
+      usuario._id,
+      {
+        socketId:
+          socket.id,
 
-          _id:
-            socket.usuario.id,
+        _id:
+          usuario._id,
 
-          nombre:
-            socket.usuario.nombre,
+        nombre:
+          usuario.nombre,
 
-          rol:
-            socket.usuario.rol,
+        rol:
+          usuario.rol,
 
-          turnoActual:
-            socket.usuario.turnoActual,
-        }
-      );
-
-        console.log(
-          `👤 Usuario ${userId} registrado`
-        );
-
-        io.emit(
-          'usuarios_conectados',
-          Array.from(
-            usuariosConectados.values()
-          )
-        );
+        turnoActual:
+          usuario.turnoActual,
       }
     );
+
+    io.emit(
+      'usuarios_conectados',
+      Array.from(
+        usuariosConectados.values()
+      )
+    );
+
+    io.emit(
+      'usuarios_conectados_count',
+      usuariosConectados.size
+    );
+  }
+);
 
 
     // =====================================
