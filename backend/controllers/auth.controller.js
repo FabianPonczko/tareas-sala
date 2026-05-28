@@ -73,8 +73,16 @@ const register =
       const token =
         jwt.sign(
           {
-            id:
-              usuario._id,
+            id: usuario._id,
+
+            nombre:
+              usuario.nombre,
+
+            rol:
+              usuario.rol,
+
+            turnoActual:
+              usuario.turnoActual,
           },
 
           process.env

@@ -91,6 +91,16 @@ export default function ChatBox({
   // =====================================
 
   useEffect(() => {
+  if (
+    socket.connected &&
+    usuario?.id
+  ) {
+
+    socket.emit(
+      'registrar_usuario',
+      usuario.id
+    );
+  }
     obtenerMensajes();
 
     // Entrar sala tarea
@@ -177,7 +187,11 @@ export default function ChatBox({
 
         setTexto('');
       } catch (error) {
-        console.log(error);
+         console.log(
+        'ERROR CHAT:',
+        error.response?.data ||
+        error.message
+      );
       }
     };
 
