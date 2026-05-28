@@ -123,6 +123,9 @@
 const MensajeChat =
   require('../models/MensajeChat');
 
+const Usuario =
+  require('../models/Usuario');
+
 
 // =====================================
 // OBTENER MENSAJES
@@ -146,7 +149,9 @@ const obtenerMensajes =
             createdAt: 1,
           });
 
-      res.json(mensajes);
+      res.json(
+        mensajes
+      );
 
     } catch (error) {
 
@@ -174,13 +179,19 @@ const enviarMensaje =
         mensaje,
       } = req.body;
 
-      if (!mensaje?.trim()) {
+      const usuario =
+        await Usuario
+          .findById(
+            req.user.id
+          );
+
+      if (!usuario) {
 
         return res
-          .status(400)
+          .status(404)
           .json({
             message:
-              'Mensaje requerido',
+              'Usuario no encontrado',
           });
       }
 
@@ -192,21 +203,22 @@ const enviarMensaje =
           mensaje,
 
           usuarioId:
-            req.user.id,
+            usuario._id,
 
           nombreUsuario:
-            req.user.nombre,
+            usuario.nombre,
 
           rolUsuario:
-            req.user.rol,
+            usuario.rol,
 
           turno:
-            req.user.turnoActual,
-
+            usuario.turnoActual,
         });
 
       global.io
-        .to(tarea)
+        .to(
+          `task_${tarea}`
+        )
         .emit(
           'nuevoMensaje',
           nuevoMensaje
@@ -240,17 +252,13 @@ const eliminarMensaje =
       const mensaje =
         await MensajeChat
           .findByIdAndUpdate(
-
             req.params
               .mensajeId,
-
             {
               eliminado: true,
-
               eliminadoAt:
                 new Date(),
             },
-
             {
               new: true,
             }
@@ -259,6 +267,9 @@ const eliminarMensaje =
       global.io.emit(
         'mensajeEliminado',
         {
+          tareaId:
+            mensaje.tarea,
+
           mensajeId:
             mensaje._id,
         }
@@ -292,5 +303,4 @@ module.exports = {
   enviarMensaje,
 
   eliminarMensaje,
-
 };
