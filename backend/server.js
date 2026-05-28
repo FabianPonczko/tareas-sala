@@ -233,10 +233,25 @@ io.on(
       'registrar_usuario',
       (userId) => {
 
-        usuariosConectados.set(
-          userId,
-          socket.id
-        );
+       usuariosConectados.set(
+        socket.usuario.id,
+        {
+          socketId:
+            socket.id,
+
+          _id:
+            socket.usuario.id,
+
+          nombre:
+            socket.usuario.nombre,
+
+          rol:
+            socket.usuario.rol,
+
+          turnoActual:
+            socket.usuario.turnoActual,
+        }
+      );
 
         console.log(
           `👤 Usuario ${userId} registrado`
@@ -245,7 +260,7 @@ io.on(
         io.emit(
           'usuarios_conectados',
           Array.from(
-            usuariosConectados.keys()
+            usuariosConectados.values()
           )
         );
       }

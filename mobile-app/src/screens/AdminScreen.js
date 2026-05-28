@@ -823,15 +823,16 @@ export default function AdminScreen() {
     
     obtenerCatalogos();
     obtenerTareasActivas();
-     socket.on(
-    'usuarios_conectados',
-    (usuarios) => {
+     
+    socket.on(
+      'usuarios_conectados',
+      (usuarios) => {
 
-      setUsuariosOnline(
-        usuarios
-      );
-    }
-  );
+        setUsuariosOnline(
+          usuarios
+        );
+      }
+    );
 
   return () => {
 
@@ -841,7 +842,7 @@ export default function AdminScreen() {
   };
   }, []);
   
-
+console.log("usuariosconectados",usuariosOnline)
   
   // =====================================
   // ENVIAR TAREA
