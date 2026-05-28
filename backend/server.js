@@ -203,190 +203,194 @@ const io = new Server(server, {
 
 global.io = io;
 
+const configureSocket =
+  require('./socket');
+
+configureSocket(io);
 
 // =====================================
 // USUARIOS CONECTADOS
 // =====================================
 
-const usuariosConectados =
-  new Map();
+// const usuariosConectados =
+//   new Map();
 
 
 // =====================================
 // SOCKET CONNECTION
 // =====================================
 
-io.on(
-  'connection',
-  (socket) => {
+// io.on(
+//   'connection',
+//   (socket) => {
 
-    console.log(
-      '✅ Cliente conectado:',
-      socket.id
-    );
+//     console.log(
+//       '✅ Cliente conectado:',
+//       socket.id
+//     );
 
-    // =====================================
-    // REGISTRAR USUARIO
-    // =====================================
+//     // =====================================
+//     // REGISTRAR USUARIO
+//     // =====================================
 
-  socket.on(
-  'registrar_usuario',
-  (usuario) => {
+//   socket.on(
+//   'registrar_usuario',
+//   (usuario) => {
 
-    if (!usuario?._id) {
-      return;
-    }
+//     if (!usuario?._id) {
+//       return;
+//     }
 
-    usuariosConectados.set(
-      usuario._id,
-      {
-        socketId: socket.id,
-        _id: usuario._id,
-        nombre: usuario.nombre,
-        rol: usuario.rol,
-        turnoActual: usuario.turnoActual,
-      }
-    );
+//     usuariosConectados.set(
+//       usuario._id,
+//       {
+//         socketId: socket.id,
+//         _id: usuario._id,
+//         nombre: usuario.nombre,
+//         rol: usuario.rol,
+//         turnoActual: usuario.turnoActual,
+//       }
+//     );
 
-    io.emit(
-      'usuarios_conectados',
-      Array.from(
-        usuariosConectados.values()
-      )
-    );
+//     io.emit(
+//       'usuarios_conectados',
+//       Array.from(
+//         usuariosConectados.values()
+//       )
+//     );
 
-    io.emit(
-      'usuarios_conectados_count',
-      usuariosConectados.size
-    );
+//     io.emit(
+//       'usuarios_conectados_count',
+//       usuariosConectados.size
+//     );
 
-    console.log(
-      '👥 Online:',
-      usuariosConectados.size
-    );
-  }
-);
-
-
-    // =====================================
-    // JOIN ROOM TAREA
-    // =====================================
-
-    socket.on(
-      'joinTaskRoom',
-      (tareaId) => {
-
-        socket.join(
-          `task_${tareaId}`
-        );
-
-        console.log(
-          `📌 ${socket.id} entró a task_${tareaId}`
-        );
-      }
-    );
+//     console.log(
+//       '👥 Online:',
+//       usuariosConectados.size
+//     );
+//   }
+// );
 
 
-    // =====================================
-    // LEAVE ROOM
-    // =====================================
+//     // =====================================
+//     // JOIN ROOM TAREA
+//     // =====================================
 
-    socket.on(
-      'leaveTaskRoom',
-      (tareaId) => {
+//     socket.on(
+//       'joinTaskRoom',
+//       (tareaId) => {
 
-        socket.leave(
-          `task_${tareaId}`
-        );
+//         socket.join(
+//           `task_${tareaId}`
+//         );
 
-        console.log(
-          `🚪 ${socket.id} salió de task_${tareaId}`
-        );
-      }
-    );
-
-
-    // =====================================
-    // NUEVO MENSAJE
-    // =====================================
-
-    socket.on(
-      'mensajeChat',
-      (data) => {
-
-        io.to(
-          `task_${data.tareaId}`
-        ).emit(
-          'nuevoMensaje',
-          data
-        );
-      }
-    );
+//         console.log(
+//           `📌 ${socket.id} entró a task_${tareaId}`
+//         );
+//       }
+//     );
 
 
-    // =====================================
-    // MENSAJE ELIMINADO
-    // =====================================
+//     // =====================================
+//     // LEAVE ROOM
+//     // =====================================
 
-    socket.on(
-      'mensajeEliminado',
-      ({
-        tareaId,
-        mensajeId,
-      }) => {
+//     socket.on(
+//       'leaveTaskRoom',
+//       (tareaId) => {
 
-        io.to(
-          `task_${tareaId}`
-        ).emit(
-          'mensajeEliminado',
-          {
-            mensajeId,
-          }
-        );
-      }
-    );
+//         socket.leave(
+//           `task_${tareaId}`
+//         );
+
+//         console.log(
+//           `🚪 ${socket.id} salió de task_${tareaId}`
+//         );
+//       }
+//     );
 
 
-    // =====================================
-    // DESCONECTAR
-    // =====================================
+//     // =====================================
+//     // NUEVO MENSAJE
+//     // =====================================
 
-    socket.on(
-      'disconnect',
-      () => {
+//     socket.on(
+//       'mensajeChat',
+//       (data) => {
 
-        console.log(
-          '❌ Cliente desconectado:',
-          socket.id
-        );
+//         io.to(
+//           `task_${data.tareaId}`
+//         ).emit(
+//           'nuevoMensaje',
+//           data
+//         );
+//       }
+//     );
 
-        for (
-          let [userId, socketId]
-          of usuariosConectados.entries()
-        ) {
 
-          if (
-            socketId === socket.id
-          ) {
+//     // =====================================
+//     // MENSAJE ELIMINADO
+//     // =====================================
 
-            usuariosConectados.delete(
-              userId
-            );
+//     socket.on(
+//       'mensajeEliminado',
+//       ({
+//         tareaId,
+//         mensajeId,
+//       }) => {
 
-            break;
-          }
-        }
+//         io.to(
+//           `task_${tareaId}`
+//         ).emit(
+//           'mensajeEliminado',
+//           {
+//             mensajeId,
+//           }
+//         );
+//       }
+//     );
 
-        io.emit(
-          'usuarios_conectados',
-          Array.from(
-            usuariosConectados.keys()
-          )
-        );
-      }
-    );
-  }
-);
+
+//     // =====================================
+//     // DESCONECTAR
+//     // =====================================
+
+//     socket.on(
+//       'disconnect',
+//       () => {
+
+//         console.log(
+//           '❌ Cliente desconectado:',
+//           socket.id
+//         );
+
+//         for (
+//           let [userId, socketId]
+//           of usuariosConectados.entries()
+//         ) {
+
+//           if (
+//             socketId === socket.id
+//           ) {
+
+//             usuariosConectados.delete(
+//               userId
+//             );
+
+//             break;
+//           }
+//         }
+
+//         io.emit(
+//           'usuarios_conectados',
+//           Array.from(
+//             usuariosConectados.keys()
+//           )
+//         );
+//       }
+//     );
+//   }
+// );
 
 
 // =====================================

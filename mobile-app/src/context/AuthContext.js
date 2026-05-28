@@ -13,6 +13,10 @@ import {
   registrarPushToken,
 } from '../services/notifications';
 
+import {
+  connectSocket,
+  disconnectSocket,
+} from '../services/socket';
 
 // =====================================
 // API
@@ -121,6 +125,7 @@ export const AuthProvider = ({
 
       setToken(token);
       setUsuario(usuario);
+      connectSocket(token);
 
       axios.defaults.headers.common.Authorization =
         `Bearer ${token}`;
@@ -204,6 +209,8 @@ const logout = async () => {
     setToken(null);
 
     setUsuario(null);
+
+    disconnectSocket();
 
   } catch (error) {
 
