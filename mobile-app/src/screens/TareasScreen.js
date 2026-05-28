@@ -753,7 +753,7 @@ export default function TareasScreen() {
 
 
       <FlatList
-        data={usuario?.rol !== "ADMIN" ? tareasTurno: tareas}
+        data={tareasTurno}
 
         keyExtractor={(item) =>
           item._id
