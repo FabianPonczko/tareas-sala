@@ -5,6 +5,10 @@ const jwt = require('jsonwebtoken');
 // SOCKET SERVER
 // =====================================
 
+const usuariosOnline =
+  new Map();
+
+
 const configureSocket = (
   io
 ) => {
@@ -72,7 +76,33 @@ const configureSocket = (
       console.log(
         `👤 Usuario: ${socket.usuario?.id}`
       );
+      
+      usuariosOnline.set(
+        socket.usuario.id,
+        {
+          socketId:
+            socket.id,
 
+          _id:
+            socket.usuario.id,
+
+          nombre:
+            socket.usuario.nombre,
+
+          rol:
+            socket.usuario.rol,
+
+          turnoActual:
+            socket.usuario.turnoActual,
+        }
+      );
+
+      io.emit(
+        'usuarios_conectados',
+        Array.from(
+          usuariosOnline.values()
+        )
+      );
 
       // =====================================
       // JOIN ROOM TAREA
@@ -292,22 +322,31 @@ const configureSocket = (
       // DISCONNECT
       // =====================================
 
-      socket.on(
-        'disconnect',
-        (
+     socket.on(
+      'disconnect',
+      (reason) => {
+
+        console.log(
+          `❌ Usuario desconectado: ${socket.id}`
+        );
+
+        console.log(
+          'Reason:',
           reason
-        ) => {
+        );
 
-          console.log(
-            `❌ Usuario desconectado: ${socket.id}`
-          );
+        usuariosOnline.delete(
+          socket.usuario.id
+        );
 
-          console.log(
-            'Reason:',
-            reason
-          );
-        }
-      );
+        io.emit(
+          'usuarios_conectados',
+          Array.from(
+            usuariosOnline.values()
+          )
+        );
+      }
+    );
     }
   );
 };

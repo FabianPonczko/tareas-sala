@@ -157,42 +157,62 @@ export const AuthProvider = ({
   // LOGOUT
   // =====================================
 
-  const logout =
-    async () => {
-      try {
-        if (token) {
-          await axios.post(
-            `${API_URL}/logout`,
-            {},
-            {
-              headers: {
-                Authorization:
-                  `Bearer ${token}`,
-              },
-            }
-          );
-        }
+  // const logout =
+  //   async () => {
+  //     try {
+  //       if (token) {
+  //         await axios.post(
+  //           `${API_URL}/logout`,
+  //           {},
+  //           {
+  //             headers: {
+  //               Authorization:
+  //                 `Bearer ${token}`,
+  //             },
+  //           }
+  //         );
+  //       }
 
-        setUsuario(null);
+  //       setUsuario(null);
 
-        setToken(null);
+  //       setToken(null);
 
-        delete axios.defaults
-          .headers.common
-          .Authorization;
+  //       delete axios.defaults
+  //         .headers.common
+  //         .Authorization;
 
-        await AsyncStorage.removeItem(
-          'token'
-        );
+  //       await AsyncStorage.removeItem(
+  //         'token'
+  //       );
 
-        await AsyncStorage.removeItem(
-          'usuario'
-        );
-      } catch (error) {
-        console.log(error);
-      }
-    };
+  //       await AsyncStorage.removeItem(
+  //         'usuario'
+  //       );
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
 
+const logout = async () => {
+
+  try {
+
+    await AsyncStorage.removeItem(
+      'token'
+    );
+
+    setToken(null);
+
+    setUsuario(null);
+
+  } catch (error) {
+
+    console.log(
+      'ERROR LOGOUT:',
+      error
+    );
+  }
+};
 
   // =====================================
   // ACTUALIZAR TURNO

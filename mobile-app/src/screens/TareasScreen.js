@@ -481,6 +481,9 @@ import { useAuth } from '../context/AuthContext';
 import { socket } from '../services/socket';
 import ChatBox from '../components/ChatBox';
 
+import {
+  useNavigation,
+} from '@react-navigation/native';
 
 // =====================================
 // API
@@ -511,6 +514,8 @@ export default function TareasScreen() {
     setRefreshing] =
     useState(false);
 
+const navigation =
+    useNavigation();
 
   // =====================================
   // OBTENER TAREAS
@@ -916,9 +921,24 @@ export default function TareasScreen() {
                   FINALIZAR 
                 </Text>
               </TouchableOpacity>
-               <ChatBox usuario={usuario} tareaId={item.tarea?._id} token={token} /> 
+              
             </View>
 
+              <TouchableOpacity
+                style={styles.chatButton}
+                onPress={() =>
+                  navigation.navigate(
+                    'TareaDetalle',
+                    {
+                      tareaId: item._id,
+                    }
+                  )
+                }
+              >
+                <Text style={styles.buttonText}>
+                  CHAT
+                </Text>
+              </TouchableOpacity>
           </View>
         )}
       />
@@ -1069,5 +1089,13 @@ finalizadoCard: {
   borderLeftColor:
     '#8E8E93',
   opacity: 0.7,
+},
+chatButton: {
+  flex: 1,
+  backgroundColor: '#007AFF',
+  padding: 12,
+  borderRadius: 12,
+  alignItems: 'center',
+  marginLeft: 10,
 },
   });

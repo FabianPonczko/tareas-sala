@@ -729,15 +729,7 @@ export default function ChatBox({
             }
           );
 
-        // Emit realtime
-        socket.emit(
-          'mensajeChat',
-          {
-            tareaId,
-
-            ...res.data,
-          }
-        );
+       
 
         setTexto('');
 
@@ -773,13 +765,7 @@ export default function ChatBox({
           }
         );
 
-        socket.emit(
-          'mensajeEliminado',
-          {
-            tareaId,
-            mensajeId,
-          }
-        );
+       
 
       } catch (error) {
 
@@ -796,119 +782,88 @@ export default function ChatBox({
   // RENDER ITEM
   // =====================================
 
-  const renderItem = ({
-    item,
-  }) => {
+ const renderItem = ({
+  item,
+}) => {
 
-    const esMio =
+  const esMio =
 
-      item.usuarioId?._id ===
-        usuario?._id ||
+    item.usuarioId?._id ===
+      usuario?._id ||
 
-      item.usuarioId ===
-        usuario?._id;
+    item.usuarioId ===
+      usuario?._id;
 
-    return (
+  return (
 
-      <View
+    <View style={styles.lineMessage}>
+
+      {/* Usuario */}
+      <Text
         style={[
-          styles.messageContainer,
-
+          styles.userLine,
           esMio &&
-            styles.myMessage,
+            styles.userLineMine,
         ]}
       >
+        {item.nombreUsuario}
+      </Text>
 
-        <Text
-          style={styles.user}
-        >
+      {/* Hora */}
+      <Text style={styles.timeLine}>
+        {new Date(
+          item.createdAt
+        ).toLocaleTimeString(
+          'es-AR',
           {
-            item.nombreUsuario
+            hour: '2-digit',
+            minute: '2-digit',
           }
+        )}
+      </Text>
+
+      {/* Mensaje */}
+      <Text
+        style={[
+          styles.messageLine,
+          esMio &&
+            styles.messageLineMine,
+        ]}
+      >
+        {item.mensaje}
+      </Text>
+
+      {/* Editado */}
+      {item.editado && (
+        <Text style={styles.editadoLine}>
+          (editado)
         </Text>
+      )}
 
-        <Text
-          style={
-            styles.message
-          }
-        >
-          {
-            item.mensaje
-          }
-        </Text>
-
-        <View
-          style={
-            styles.footerMessage
-          }
-        >
-
-          <Text
-            style={
-              styles.time
-            }
-          >
-            {
-              new Date(
-                item.createdAt
-              ).toLocaleTimeString(
-                'es-AR',
-                {
-                  hour:
-                    '2-digit',
-
-                  minute:
-                    '2-digit',
-                }
-              )
-            }
-          </Text>
-
-          {
-            item.editado && (
-              <Text
-                style={
-                  styles.editado
-                }
-              >
-                editado
-              </Text>
+      {/* Eliminar */}
+      {(esMio ||
+        usuario?.rol ===
+          'ADMIN') && (
+        <TouchableOpacity
+          onPress={() =>
+            eliminarMensaje(
+              item._id
             )
           }
+        >
+          <Text
+            style={
+              styles.deleteLine
+            }
+          >
+            ✕
+          </Text>
+        </TouchableOpacity>
+      )}
 
-        </View>
-
-        {
-          (
-            esMio ||
-
-            usuario?.rol ===
-              'ADMIN'
-          ) && (
-
-            <TouchableOpacity
-              onPress={() =>
-                eliminarMensaje(
-                  item._id
-                )
-              }
-            >
-
-              <Text
-                style={
-                  styles.delete
-                }
-              >
-                Eliminar
-              </Text>
-
-            </TouchableOpacity>
-          )
-        }
-
-      </View>
-    );
-  };
+    </View>
+  );
+};
 
 
   // =====================================
@@ -1128,4 +1083,50 @@ const styles =
       color: '#fff',
       fontWeight: 'bold',
     },
+    lineMessage: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  marginBottom: 8,
+  flexWrap: 'wrap',
+},
+
+userLine: {
+  fontWeight: 'bold',
+  color: '#007AFF',
+  marginRight: 6,
+  fontSize: 14,
+},
+
+userLineMine: {
+  color: '#28A745',
+},
+
+timeLine: {
+  fontSize: 11,
+  color: '#999',
+  marginRight: 8,
+},
+
+messageLine: {
+  fontSize: 15,
+  color: '#222',
+  flexShrink: 1,
+},
+
+messageLineMine: {
+  color: '#111',
+},
+
+editadoLine: {
+  marginLeft: 6,
+  fontSize: 10,
+  color: '#999',
+},
+
+deleteLine: {
+  marginLeft: 8,
+  color: 'red',
+  fontSize: 12,
+  fontWeight: 'bold',
+},
   });

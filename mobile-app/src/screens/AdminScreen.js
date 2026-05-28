@@ -610,6 +610,7 @@ import { Picker } from
 import { useAuth } from
   '../context/AuthContext';
 
+  import { socket } from '../services/socket';
 
   import TareasScreen from './TareasScreen';
 
@@ -617,30 +618,31 @@ import { useAuth } from
 // API
 // =====================================
 
+
 const API_URL =
   'https://tareas-sala.onrender.com/api';
 
-
-// =====================================
-// TURNOS
-// =====================================
-
-const TURNOS = [
-  {
-    label:
+  
+  // =====================================
+  // TURNOS
+  // =====================================
+  
+  const TURNOS = [
+    {
+      label:
       'Mañana (06-14)',
-    value: 'MANANA',
-  },
-
-  {
-    label:
+      value: 'MANANA',
+    },
+    
+    {
+      label:
       'Tarde (14-22)',
-    value: 'TARDE',
-  },
-
+      value: 'TARDE',
+    },
+    
   {
     label:
-      'Noche (22-06)',
+    'Noche (22-06)',
     value: 'NOCHE',
   },
 ];
@@ -651,6 +653,9 @@ const TURNOS = [
 // =====================================
 
 export default function AdminScreen() {
+  
+  const [usuariosOnline, setUsuariosOnline] = useState([]);
+  
 
   const {
     token,
@@ -818,7 +823,22 @@ export default function AdminScreen() {
     
     obtenerCatalogos();
     obtenerTareasActivas();
-    
+     socket.on(
+    'usuarios_conectados',
+    (usuarios) => {
+
+      setUsuariosOnline(
+        usuarios
+      );
+    }
+  );
+
+  return () => {
+
+    socket.off(
+      'usuarios_conectados'
+    );
+  };
   }, []);
   
 
@@ -1082,9 +1102,50 @@ export default function AdminScreen() {
       </View>
 
 
+
+
+<View style={styles.card}>
+
+  <Text style={styles.sectionTitle}>
+    Usuarios conectados
+  </Text>
+
+  {
+    usuariosOnline.map((u) => (
+
+      <View
+        key={u._id}
+        style={{
+          paddingVertical: 8,
+          borderBottomWidth: 1,
+          borderColor: '#eee',
+        }}
+      >
+
+        <Text>
+          🟢 {u.nombre}
+        </Text>
+
+        <Text>
+          {u.rol}
+        </Text>
+
+        <Text>
+          {u.turnoActual}
+        </Text>
+
+      </View>
+    ))
+  }
+
+</View>
+
+
       {/* ================================= */}
       {/* RESUMEN */}
       {/* ================================= */}
+
+
 
       <View
         style={
