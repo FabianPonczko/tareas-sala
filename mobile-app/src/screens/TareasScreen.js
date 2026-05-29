@@ -688,7 +688,7 @@ const navigation =
         
       );
      
-
+console.log("tareas",tareas)
   // =====================================
   // LOADING
   // =====================================
@@ -818,7 +818,18 @@ const navigation =
                   ?.nombre
               }
             </Text>
-
+              <Text
+              style={
+                styles.cardText
+              }
+            >
+              Unidades:
+              {' '}
+              {
+                item.tarea?.unidades
+                  
+              }
+            </Text>
             <Text
               style={
                 styles.cardText

@@ -83,6 +83,9 @@ const actualizarEstado = async (req, res) => {
         populate: [
           {
             path: 'tanque',
+          }, 
+          {
+            path: 'unidades',
           },
           {
             path: 'disolutor',
@@ -117,19 +120,23 @@ const TareaPrefijada = require(
 
 const crearTarea = async (req, res) => {
   try {
-    const {
+    let {
       sabor,
       tanque,
+      unidades,
       disolutor,
       turno,
       fecha,
     } = req.body;
+    
+    unidades = Number(unidades)
 
     // Buscar combinación existente
     let tareaPrefijada =
       await TareaPrefijada.findOne({
         sabor,
         tanque,
+        unidades,
         disolutor,
       });
 
@@ -139,6 +146,7 @@ const crearTarea = async (req, res) => {
         await TareaPrefijada.create({
           sabor,
           tanque,
+          unidades,
           disolutor,
         });
     }
@@ -164,6 +172,9 @@ const crearTarea = async (req, res) => {
           },
           {
             path: 'tanque',
+          },
+          {
+            path: 'unidades',
           },
           {
             path: 'disolutor',
@@ -199,6 +210,9 @@ const obtenerTareas =
               },
               {
                 path: 'tanque',
+              },
+              {
+                path: 'unidades',
               },
               {
                 path: 'disolutor',
@@ -240,6 +254,9 @@ const obtenerTareasActivas =
               },
               {
                 path: 'tanque',
+              },
+              {
+              path: 'unidades',
               },
               {
                 path: 'disolutor',

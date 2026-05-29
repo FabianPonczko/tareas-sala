@@ -146,7 +146,7 @@ const tareaAsignadaSchema =
       turno: {
         type: String,
         enum: [
-          'MANANA',
+          'MAÑANA',
           'TARDE',
           'NOCHE',
         ],

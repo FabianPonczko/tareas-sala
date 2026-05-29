@@ -12,12 +12,17 @@ const tareaPrefijadaSchema = new mongoose.Schema({
     ref: 'Tanque',
     required: true,
   },
+  unidades: {
+    type: Number,
+    required: true,
+  },
 
   disolutor: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Disolutor',
     required: true,
   },
+  
 
   activo: {
     type: Boolean,

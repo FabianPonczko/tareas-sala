@@ -613,6 +613,7 @@ import { useAuth } from
   import { socket } from '../services/socket';
 
   import TareasScreen from './TareasScreen';
+import { TextInput } from 'react-native-gesture-handler';
 
 // =====================================
 // API
@@ -631,7 +632,7 @@ const API_URL =
     {
       label:
       'Mañana (06-14)',
-      value: 'MANANA',
+      value: 'MAÑANA',
     },
     
     {
@@ -677,6 +678,9 @@ export default function AdminScreen() {
 
   const [tanques, setTanques] =
     useState([]);
+     
+  const [unidades, setUnidades] =
+    useState("");
 
   const [disolutores,
     setDisolutores] =
@@ -690,13 +694,17 @@ export default function AdminScreen() {
     setSelectedTanque] =
     useState('');
 
+  const [selectedUnidades,
+    setSelectesUnidades] =
+    useState('');
+
   const [selectedDisolutor,
     setSelectedDisolutor] =
     useState('');
 
   const [selectedTurno,
     setSelectedTurno] =
-    useState('MANANA');
+    useState('MAÑANA');
 
   const [fecha, setFecha] =
     useState(
@@ -793,6 +801,10 @@ export default function AdminScreen() {
         setTanques(
           response.data.tanques
         );
+
+        setUnidades(
+          response.data.unidades
+        );
         
         setDisolutores(
           response.data.disolutores
@@ -856,12 +868,13 @@ console.log("usuariosconectados",usuariosOnline)
         if (
           !selectedSabor ||
           !selectedTanque ||
+          !unidades ||
           !selectedDisolutor
         ) {
-          return Alert.alert(
+          return (Alert.alert(
             'Error',
             'Completá todos los campos'
-          );
+          ),console.log('Completá todos los campos',unidades));
         }
 
         await axios.post(
@@ -872,6 +885,9 @@ console.log("usuariosconectados",usuariosOnline)
 
             tanque:
               selectedTanque,
+
+             unidades:
+              Number(unidades), 
 
             disolutor:
               selectedDisolutor,
@@ -888,7 +904,7 @@ console.log("usuariosconectados",usuariosOnline)
             },
           }
         );
-
+        console.log("tarea enviada")
         Alert.alert(
           'Éxito',
           'Tarea enviada correctamente'
@@ -1016,7 +1032,28 @@ console.log("usuariosconectados",usuariosOnline)
         </Picker>
       </View>
 
+      {/* ======================== */}
+      {/* Unidades */}
+      {/* ======================== */}
 
+          <Text style={styles.sectionTitle}
+          >
+            Unidades
+          </Text>
+          <View>
+            
+            <TextInput  
+                style={styles.inputbox}
+                keyboardType="numeric"
+                placeholder="Ingrese unidades"
+                value={unidades||0}
+                onChangeText={(value) =>
+                  setUnidades(value)
+                }
+            >
+            
+            </TextInput>
+          </View>
       {/* ================================= */}
       {/* DISOLUTOR */}
       {/* ================================= */}
@@ -1386,5 +1423,13 @@ const styles =
       borderRadius: 12,
       alignItems: 'center',
     },
+      inputbox:{
+        fontSize:13,
+        backgroundColor:"#fff",
+        borderRadius:5,
+        marginLeft:2,
+        marginBottom:16,
+        borderWidth:1
+      }
     
   });

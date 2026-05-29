@@ -134,12 +134,12 @@ export default function HomeScreen() {
               styles.turnoButton,
 
               usuario?.turnoActual ===
-                'MANANA' &&
+                'MAÑANA' &&
                 styles.turnoSelected,
             ]}
             onPress={() =>
               cambiarTurno(
-                'MANANA'
+                'MAÑANA'
               )
             }
           >
