@@ -83,6 +83,9 @@ const actualizarEstado = async (req, res) => {
         populate: [
           {
             path: 'tanque',
+          }, 
+          {
+            path: 'unidades',
           },
           {
             path: 'disolutor',

@@ -818,7 +818,18 @@ const navigation =
                   ?.nombre
               }
             </Text>
-
+              <Text
+              style={
+                styles.cardText
+              }
+            >
+              Unidades:
+              {' '}
+              {
+                item.tarea?.unidades
+                  ?.numero
+              }
+            </Text>
             <Text
               style={
                 styles.cardText
