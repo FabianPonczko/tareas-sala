@@ -5,7 +5,7 @@ require('dotenv').config();
 // const serviceAccount = require(
 //   '../serviceAccountKey.json'
 // );
-const serviceAccount = process.env.SERVICE_ACOOUNT
+const serviceAccount = JSON.parse(process.env.SERVICE_ACOOUNT)
 admin.initializeApp({
   credential:
     admin.credential.cert(
