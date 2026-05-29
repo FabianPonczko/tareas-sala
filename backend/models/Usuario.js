@@ -23,7 +23,7 @@ const usuarioSchema = new mongoose.Schema(
     turnoActual: {
       type: String,
       enum: [
-        'MANANA',
+        'MAÑANA',
         'TARDE',
         'NOCHE',
       ],
