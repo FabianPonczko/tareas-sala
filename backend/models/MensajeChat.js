@@ -66,7 +66,7 @@ const mensajeChatSchema =
         type: String,
 
         enum: [
-          'MANANA',
+          'MAÑANA',
           'TARDE',
           'NOCHE',
         ],

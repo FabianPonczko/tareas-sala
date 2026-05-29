@@ -680,7 +680,7 @@ export default function AdminScreen() {
     useState([]);
      
   const [unidades, setUnidades] =
-    useState([]);
+    useState("");
 
   const [disolutores,
     setDisolutores] =
@@ -871,10 +871,10 @@ console.log("usuariosconectados",usuariosOnline)
           !unidades ||
           !selectedDisolutor
         ) {
-          return Alert.alert(
+          return (Alert.alert(
             'Error',
             'Completá todos los campos'
-          );
+          ),console.log('Completá todos los campos',unidades));
         }
 
         await axios.post(
@@ -904,7 +904,7 @@ console.log("usuariosconectados",usuariosOnline)
             },
           }
         );
-
+        console.log("tarea enviada")
         Alert.alert(
           'Éxito',
           'Tarea enviada correctamente'
@@ -1042,13 +1042,14 @@ console.log("usuariosconectados",usuariosOnline)
           </Text>
           <View>
             
-            <TextInput  style={styles.inputbox}
-              keyboardType='numeric'
-              placeholder='Ingrese unidades'
-              value={unidades}
-              onValueChange={
-                setUnidades
-              }
+            <TextInput  
+                style={styles.inputbox}
+                keyboardType="numeric"
+                placeholder="Ingrese unidades"
+                value={unidades||0}
+                onChangeText={(value) =>
+                  setUnidades(value)
+                }
             >
             
             </TextInput>

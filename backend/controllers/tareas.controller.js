@@ -120,6 +120,7 @@ const crearTarea = async (req, res) => {
     const {
       sabor,
       tanque,
+      unidades,
       disolutor,
       turno,
       fecha,
@@ -130,6 +131,7 @@ const crearTarea = async (req, res) => {
       await TareaPrefijada.findOne({
         sabor,
         tanque,
+        unidades,
         disolutor,
       });
 
@@ -139,6 +141,7 @@ const crearTarea = async (req, res) => {
         await TareaPrefijada.create({
           sabor,
           tanque,
+          unidades,
           disolutor,
         });
     }
@@ -164,6 +167,9 @@ const crearTarea = async (req, res) => {
           },
           {
             path: 'tanque',
+          },
+          {
+            path: 'unidades',
           },
           {
             path: 'disolutor',
@@ -199,6 +205,9 @@ const obtenerTareas =
               },
               {
                 path: 'tanque',
+              },
+              {
+                path: 'unidades',
               },
               {
                 path: 'disolutor',
@@ -240,6 +249,9 @@ const obtenerTareasActivas =
               },
               {
                 path: 'tanque',
+              },
+              {
+              path: 'unidades',
               },
               {
                 path: 'disolutor',

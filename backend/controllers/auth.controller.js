@@ -63,7 +63,7 @@ const register =
 
           turnoActual:
             turnoActual ||
-            'MANANA',
+            'MAÑANA',
 
           rol:
             'OPERARIO',

@@ -50,7 +50,7 @@ export default function RegisterScreen() {
       email: '',
       password: '',
       turnoActual:
-        'MANANA',
+        'MAÑANA',
     });
 
 
@@ -214,7 +214,7 @@ export default function RegisterScreen() {
         >
 
           {[
-            'MANANA',
+            'MAÑANA',
             'TARDE',
             'NOCHE',
           ].map(
