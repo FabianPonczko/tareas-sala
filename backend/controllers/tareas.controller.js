@@ -120,7 +120,7 @@ const TareaPrefijada = require(
 
 const crearTarea = async (req, res) => {
   try {
-    const {
+    let {
       sabor,
       tanque,
       unidades,
@@ -129,6 +129,7 @@ const crearTarea = async (req, res) => {
       fecha,
     } = req.body;
     
+    unidades = Number(unidades)
 
     // Buscar combinación existente
     let tareaPrefijada =
