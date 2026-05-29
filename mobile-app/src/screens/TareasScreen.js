@@ -688,7 +688,7 @@ const navigation =
         
       );
      
-
+console.log("tareas",tareas)
   // =====================================
   // LOADING
   // =====================================
@@ -827,7 +827,7 @@ const navigation =
               {' '}
               {
                 item.tarea?.unidades
-                  ?.numero
+                  
               }
             </Text>
             <Text
