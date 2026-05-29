@@ -13,7 +13,7 @@ const tareaPrefijadaSchema = new mongoose.Schema({
     required: true,
   },
   unidades: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Number,
     ref: 'Unidades',
     required: true,
   },

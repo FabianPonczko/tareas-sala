@@ -887,7 +887,7 @@ console.log("usuariosconectados",usuariosOnline)
               selectedTanque,
 
              unidades:
-              unidades, 
+              Number(unidades), 
 
             disolutor:
               selectedDisolutor,

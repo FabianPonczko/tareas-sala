@@ -128,6 +128,7 @@ const crearTarea = async (req, res) => {
       turno,
       fecha,
     } = req.body;
+    
 
     // Buscar combinación existente
     let tareaPrefijada =
