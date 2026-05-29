@@ -497,118 +497,118 @@ const API_URL =
 // SCREEN
 // =====================================
 
-export default function TareasScreen() {
-
+export default function TareasScreen({fechaAfiltrar}) {
   const {
     token,
     usuario,
   } = useAuth();
-
+  
   const [tareas, setTareas] =
-    useState([]);
-
+  useState([]);
+  
   const [loading, setLoading] =
-    useState(true);
-
+  useState(true);
+  
   const [refreshing,
     setRefreshing] =
     useState(false);
-
-const navigation =
+    
+    const navigation =
     useNavigation();
-
-  // =====================================
-  // OBTENER TAREAS
-  // =====================================
-
-  const obtenerTareas =
+    
+    // =====================================
+    // OBTENER TAREAS
+    // =====================================
+    
+    const obtenerTareas =
     async () => {
-
+      
       try {
-
+        
         const response =
-          await axios.get(
-            API_URL,
-            {
-              headers: {
-                Authorization:
-                  `Bearer ${token}`,
+        await axios.get(
+          API_URL,
+          {
+            headers: {
+              Authorization:
+              `Bearer ${token}`,
               },
             }
           );
 
-        setTareas(
-          response.data
-        );
-
-      } catch (error) {
-
-        console.log(error);
-
+          setTareas(
+            response.data
+          );
+          
+        } catch (error) {
+          
+          console.log(error);
+          
         Alert.alert(
           'Error',
           'No se pudieron cargar las tareas'
         );
 
       } finally {
-
+        
         setLoading(false);
 
         setRefreshing(false);
-
+        
       }
     };
+    
 
-
-  // =====================================
-  // SOCKETS
-  // =====================================
-
-  useEffect(() => {
-
-    obtenerTareas();
-
-    socket.on(
-      'nuevaTarea',
-      (nuevaTarea) => {
-
-        setTareas((prev) => [
-          nuevaTarea,
-          ...prev,
-        ]);
-      }
-    );
-
-    socket.on(
-      'estadoActualizado',
-      (
-        tareaActualizada
-      ) => {
-
-        setTareas((prev) =>
-          prev.map((t) =>
-            t._id ===
-            tareaActualizada._id
-              ? tareaActualizada
-              : t
-          )
-        );
-      }
-    );
-
-    return () => {
-
-      socket.off(
-        'nuevaTarea'
+    // =====================================
+    // SOCKETS
+    // =====================================
+    
+    useEffect(() => {
+      
+      obtenerTareas();
+      
+      socket.on(
+        'nuevaTarea',
+        (nuevaTarea) => {
+          
+          setTareas((prev) => [
+            nuevaTarea,
+            ...prev,
+          ]);
+        }
       );
-
-      socket.off(
-        'estadoActualizado'
+      
+      socket.on(
+        'estadoActualizado',
+        (
+          tareaActualizada
+        ) => {
+          
+          setTareas((prev) =>
+            prev.map((t) =>
+              t._id ===
+          tareaActualizada._id
+          ? tareaActualizada
+          : t
+        )
       );
-    };
+    }
+  );
+  
+  return () => {
+    
+    socket.off(
+      'nuevaTarea'
+    );
+    
+    socket.off(
+      'estadoActualizado'
+    );
+  };
+  
+}, []);
 
-  }, []);
-
+console.log("fechaafiltrar",fechaAfiltrar)
 
   // =====================================
   // REFRESH
@@ -680,19 +680,19 @@ const navigation =
   const tareasTurno =
    tareas.filter(
     (t) =>
-      t.turno ===
+      t.turno ==
         usuario?.turnoActual &&
       t.estado !==
         'FINALIZADO' &&
-        hoy == t.createdAt.split("T")[0]
+        !fechaAfiltrar?hoy:fechaAfiltrar == t.createdAt.split("T")[0]
         
       );
      
-console.log("tareas",tareas)
+
   // =====================================
   // LOADING
   // =====================================
-// console.log("tareas ",tareas)
+console.log("tareas ",tareas)
   if (loading) {
 
     return (
@@ -713,8 +713,8 @@ console.log("tareas",tareas)
   // EMPTY
   // =====================================
 
-  if (!tareasTurno.length) {
-
+  console.log("tareasTurno",tareasTurno,usuario?.turnoActual)
+  if (!tareasTurno.length ) {
     return (
       <View
         style={

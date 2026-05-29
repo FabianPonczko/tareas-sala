@@ -667,51 +667,32 @@ export default function AdminScreen() {
   // STATES
   // =====================================
 
-  const [loading, setLoading] =
-    useState(true);
+  const [loading, setLoading] = useState(true);
 
-  const [tareasActivas,setTareasActivas] =
-    useState([]);
+  const [tareasActivas,setTareasActivas] = useState([]);
 
-  const [sabores, setSabores] =
-    useState([]);
+  const [sabores, setSabores] =  useState([]);
 
-  const [tanques, setTanques] =
-    useState([]);
+  const [tanques, setTanques] =  useState([]);
      
-  const [unidades, setUnidades] =
-    useState("");
+  const [unidades, setUnidades] =  useState([]);
 
-  const [disolutores,
-    setDisolutores] =
-    useState([]);
+  const [disolutores, setDisolutores] =  useState([]);
 
-  const [selectedSabor,
-    setSelectedSabor] =
-    useState('');
+  const [selectedSabor, setSelectedSabor] =  useState('');
 
-  const [selectedTanque,
-    setSelectedTanque] =
-    useState('');
+  const [selectedTanque, setSelectedTanque] =  useState('');
 
-  const [selectedUnidades,
-    setSelectesUnidades] =
-    useState('');
+  const [selectedUnidades, setSelectesUnidades] =  useState('');
 
-  const [selectedDisolutor,
-    setSelectedDisolutor] =
-    useState('');
+  const [selectedDisolutor, setSelectedDisolutor] =  useState('');
 
-  const [selectedTurno,
-    setSelectedTurno] =
-    useState('MAÑANA');
+  const [selectedTurno, setSelectedTurno] = useState('MAÑANA');
 
-  const [fecha, setFecha] =
-    useState(
-      new Date()
-        .toISOString()
-        .split('T')[0]
-    );
+  const [fecha, setFecha] =  useState(new Date().toISOString().split('T')[0]);
+
+  const [fechaAfiltrar, setFechaAfiltrar] =  useState(new Date().toISOString().split('T')[0]);
+
 
 
     const obtenerTareasActivas =
@@ -854,8 +835,10 @@ export default function AdminScreen() {
   };
   }, []);
   
-console.log("usuariosconectados",usuariosOnline)
+
   
+
+
   // =====================================
   // ENVIAR TAREA
   // =====================================
@@ -1046,7 +1029,7 @@ console.log("usuariosconectados",usuariosOnline)
                 style={styles.inputbox}
                 keyboardType="numeric"
                 placeholder="Ingrese unidades"
-                value={unidades||0}
+                value={unidades}
                 onChangeText={(value) =>
                   setUnidades(value)
                 }
@@ -1244,7 +1227,47 @@ console.log("usuariosconectados",usuariosOnline)
           Tareas activas
         </Text>
         </TouchableOpacity>        */}
-        <TareasScreen/>
+
+        <TareasScreen fechaAfiltrar={fecha}/>
+
+
+        <View
+          style={
+            styles.summaryCard
+          }
+        >
+
+          <Text
+            style={
+              styles.summaryTitle
+            }
+          >
+              Filtrar Tareas por fecha
+            </Text>
+            
+            
+               <input style={{maxWidth:105}}
+            type="date"
+            value={fechaAfiltrar}
+            onChange={(e) =>
+              setFechaAfiltrar(
+                e.target.value
+              )
+            }>
+
+            </input>
+            
+
+            {/* <TextInput
+              value={fechaAfiltrar}
+              onChangeText={setFechaAfiltrar}
+              placeholder='yyyy-mm-dd'
+            >
+            </TextInput> */}
+        </View>
+
+            {fechaAfiltrar !== fecha && <TareasScreen fechaAfiltrar={fechaAfiltrar}/>}
+
   {/* {
     tareasActivas.map((t) => (
 
