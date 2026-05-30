@@ -118,6 +118,15 @@ const TareaPrefijada = require(
   '../models/TareaPrefijada'
 );
 
+const {
+  enviarPushGrupal,
+} = require(
+  '../services/push.service.js'
+);
+
+const Usuario =
+  require('../models/Usuario');
+
 const crearTarea = async (req, res) => {
   try {
     let {
@@ -186,6 +195,28 @@ const crearTarea = async (req, res) => {
       'nuevaTarea',
       populated
     );
+
+
+    // crear tarea... y push notificaciones
+
+      const usuarios =
+        await Usuario.find({
+          turnoActual: turno,
+        });
+
+      const tokens =
+        usuarios
+          .map(u => u.pushToken)
+          .filter(Boolean);
+
+      await enviarPushGrupal({
+        tokens,
+        titulo:
+          'Sala de bebidas Informa',
+        mensaje:
+          'Se creó una nueva tarea',
+          
+      });
 
     res.json(populated);
   } catch (error) {
