@@ -107,7 +107,10 @@ export const AuthProvider = ({
 
       const pushToken =
         await registrarPushToken();
-
+        console.log(
+          "TOKEN GENERADO:",
+          pushToken
+        );
       const response =
         await axios.post(
           `${API_URL}/login`,
@@ -122,7 +125,21 @@ export const AuthProvider = ({
         token,
         usuario,
       } = response.data;
-
+ 
+      if (pushToken) {
+        await axios.post(
+          `${API_URL}/push-token`,
+          {
+            pushToken,
+          },
+          {
+            headers: {
+              Authorization:
+                `Bearer ${token}`,
+            },
+          }
+        );
+      }
       setToken(token);
       setUsuario(usuario);
       connectSocket(token);

@@ -763,10 +763,10 @@ console.log("tareas ",tareas)
         {usuario?.turnoActual}
       </Text>
 
-
+      
       <FlatList
         data={tareasTurno}
-
+        
         keyExtractor={(item) =>
           item._id
         }
@@ -781,7 +781,7 @@ console.log("tareas ",tareas)
             }
           />
         }
-
+        
         renderItem={({
           item,
         }) => (
@@ -953,8 +953,8 @@ console.log("tareas ",tareas)
           </View>
         )}
       />
-
-    </View>
+      </View>
+    
   );
 }
 
@@ -1013,7 +1013,10 @@ const styles =
         '#fff',
       padding: 16,
       borderRadius: 16,
-      marginBottom: 14,
+      marginBottom: 20,
+      
+      margin:20,
+      width:"90%",
     },
 
     cardTitle: {
