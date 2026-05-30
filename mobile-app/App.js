@@ -21,6 +21,9 @@ import {
   disconnectSocket,
 } from './src/services/socket';
 
+import {
+  navigate,
+} from './src/navigation/navigationRef';
 
 // =====================================
 // CONFIG PUSH NOTIFICATIONS
@@ -53,6 +56,7 @@ function RootApp() {
     isAuthenticated,
   } = useAuth();
 
+  
 
   // =====================================
   // SOCKET CONNECTION
@@ -111,14 +115,32 @@ function RootApp() {
           .content
           .data;
 
+          console.log(
+  JSON.stringify(
+    response.notification
+      .request
+      .content,
+    null,
+    2
+  )
+);
       console.log(data);
 
-          navigation.navigate(
-            'TareaDetalle',
-            {
-              tareaId: data.tareaId,
-            }
-          );
+       const dataTraida =
+  response.notification
+    .request
+    .content
+    .data;
+
+if (dataTraida?.tareaId) {
+
+  navigate(
+    'Tareas',
+    {
+      tareaId: dataTraida.tareaId,
+    }
+  );
+}
 
           console.log(
             '👆 Push abierta:',

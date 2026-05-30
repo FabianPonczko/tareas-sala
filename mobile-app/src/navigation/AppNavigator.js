@@ -219,6 +219,9 @@ import TareaDetalleScreen
 import AdminScreen
   from '../screens/AdminScreen';
 
+import {
+  navigationRef,
+} from './navigationRef';
 
 // =====================================
 // STACK
@@ -241,7 +244,9 @@ export default function AppNavigator() {
 
 
   return (
-    <NavigationContainer>
+    <NavigationContainer
+      ref={navigationRef}  
+    >
 
       <Stack.Navigator>
 
