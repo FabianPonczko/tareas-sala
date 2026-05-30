@@ -165,5 +165,16 @@ socket.on(
     );
   }
 );
+socket.onAny(
+  (event, ...args) => {
+
+    console.log(
+      'EVENTO:',
+      event,
+      args
+    );
+
+  }
+);
 
 export default socket;

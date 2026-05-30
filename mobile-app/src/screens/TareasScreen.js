@@ -569,7 +569,7 @@ export default function TareasScreen({fechaAfiltrar}) {
     // =====================================
     
     useEffect(() => {
-      
+     
       obtenerTareas();
       
       socket.on(
@@ -599,10 +599,10 @@ export default function TareasScreen({fechaAfiltrar}) {
       );
     }
   );
-      socket.on(
-        'mensajeNoLeido',
-        ({ tareaId }) => {
-
+  socket.on(
+    'mensajeNoLeido',
+    ({ tareaId }) => {
+         
           setMensajesPendientes(
             prev => ({
               ...prev,
@@ -612,25 +612,25 @@ export default function TareasScreen({fechaAfiltrar}) {
           );
         }
       );
-  
-  return () => {
-    
-    socket.off(
-      'nuevaTarea'
+      
+      return () => {
+     
+        socket.off(
+          'nuevaTarea'
+        );
+        
+        socket.off(
+          'estadoActualizado'
     );
-    
     socket.off(
-      'estadoActualizado'
-    );
-     socket.off(
       'mensajeNoLeido'
     );
-  
+    
   };
   
 }, []);
 
-console.log("fechaafiltrar",fechaAfiltrar)
+// console.log("fechaafiltrar",fechaAfiltrar)
 
   // =====================================
   // REFRESH
@@ -714,7 +714,7 @@ console.log("fechaafiltrar",fechaAfiltrar)
   // =====================================
   // LOADING
   // =====================================
-console.log("tareas ",tareas)
+// console.log("tareas ",tareas)
   if (loading) {
 
     return (
@@ -735,7 +735,7 @@ console.log("tareas ",tareas)
   // EMPTY
   // =====================================
 
-  console.log("tareasTurno",tareasTurno,usuario?.turnoActual)
+  // console.log("tareasTurno",tareasTurno,usuario?.turnoActual)
   if (!tareasTurno.length ) {
     return (
       <View
@@ -1149,5 +1149,23 @@ chatButton: {
   borderRadius: 12,
   alignItems: 'center',
   marginLeft: 10,
+},
+badge: {
+  position: 'absolute',
+  top: -8,
+  right: -8,
+  backgroundColor: 'red',
+  borderRadius: 10,
+  minWidth: 20,
+  height: 20,
+  justifyContent: 'center',
+  alignItems: 'center',
+  paddingHorizontal: 4,
+},
+
+badgeText: {
+  color: '#fff',
+  fontSize: 12,
+  fontWeight: 'bold',
 },
   });

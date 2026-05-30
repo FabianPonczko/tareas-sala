@@ -223,6 +223,13 @@ const enviarMensaje =
           'nuevoMensaje',
           nuevoMensaje
         );
+        
+      global.io.emit(
+          'mensajeNoLeido',
+        {
+          tareaId: tarea,
+        }
+        );
 
       res.status(201).json(
         nuevoMensaje
