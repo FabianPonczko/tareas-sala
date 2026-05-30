@@ -204,6 +204,13 @@ const configureSocket = (
             'nuevoMensaje',
             data
           );
+          
+           io.emit(
+            'mensajeNoLeido',
+            {
+              tareaId: data.tareaId,
+            }
+          );
         }
       );
 

@@ -516,6 +516,11 @@ export default function TareasScreen({fechaAfiltrar}) {
     const navigation =
     useNavigation();
     
+
+     const [
+      mensajesPendientes,
+      setMensajesPendientes
+    ] = useState({});
     // =====================================
     // OBTENER TAREAS
     // =====================================
@@ -594,6 +599,19 @@ export default function TareasScreen({fechaAfiltrar}) {
       );
     }
   );
+      socket.on(
+        'mensajeNoLeido',
+        ({ tareaId }) => {
+
+          setMensajesPendientes(
+            prev => ({
+              ...prev,
+              [tareaId]:
+                (prev[tareaId] || 0) + 1
+            })
+          );
+        }
+      );
   
   return () => {
     
@@ -604,6 +622,10 @@ export default function TareasScreen({fechaAfiltrar}) {
     socket.off(
       'estadoActualizado'
     );
+     socket.off(
+      'mensajeNoLeido'
+    );
+  
   };
   
 }, []);
@@ -937,18 +959,34 @@ console.log("tareas ",tareas)
 
               <TouchableOpacity
                 style={styles.chatButton}
-                onPress={() =>
+                onPress={() => {
+
+                  setMensajesPendientes(
+                    prev => ({
+                      ...prev,
+                      [item._id]: 0,
+                    })
+                  );
+
                   navigation.navigate(
                     'TareaDetalle',
                     {
                       tareaId: item._id,
                     }
-                  )
-                }
+                  );
+                }}
               >
                 <Text style={styles.buttonText}>
                   CHAT
                 </Text>
+
+                {mensajesPendientes[item._id] > 0 && (
+                  <View style={styles.badge}>
+                    <Text style={styles.badgeText}>
+                      {mensajesPendientes[item._id]}
+                    </Text>
+                  </View>
+                )}
               </TouchableOpacity>
           </View>
         )}

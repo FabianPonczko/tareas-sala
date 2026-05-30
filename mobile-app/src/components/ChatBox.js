@@ -543,6 +543,7 @@ export default function ChatBox({
   const flatListRef =
     useRef(null);
 
+   
 
   // =====================================
   // CARGAR MENSAJES
