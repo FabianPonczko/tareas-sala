@@ -104,6 +104,22 @@ function RootApp() {
         (
           response
         ) => {
+
+      const data =
+        response.notification
+          .request
+          .content
+          .data;
+
+      console.log(data);
+
+          navigation.navigate(
+            'TareaDetalle',
+            {
+              tareaId: data.tareaId,
+            }
+          );
+
           console.log(
             '👆 Push abierta:',
             response

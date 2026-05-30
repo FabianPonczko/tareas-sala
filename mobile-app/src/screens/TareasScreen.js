@@ -1015,8 +1015,8 @@ const styles =
       borderRadius: 16,
       marginBottom: 20,
       
-      margin:20,
-      width:"90%",
+      
+      
     },
 
     cardTitle: {

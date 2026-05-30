@@ -215,6 +215,9 @@ const crearTarea = async (req, res) => {
           'Sala de bebidas Informa',
         mensaje:
           'Se creó una nueva tarea',
+           data: {
+              tareaId: populated._id.toString(),
+           },
           
       });
 
