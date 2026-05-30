@@ -861,7 +861,7 @@ export default function TareasScreen({fechaAfiltrar}) {
               {' '}
               {
                 item.tarea?.tanque
-                  ?.numero
+                  ?.numero 
               }
             </Text>
 
@@ -1108,6 +1108,7 @@ const styles =
     buttonText: {
       color: '#fff',
       fontWeight: 'bold',
+      fontSize:12,
     },
     pendienteCard: {
   borderLeftWidth: 8,
@@ -1149,6 +1150,7 @@ chatButton: {
   borderRadius: 12,
   alignItems: 'center',
   marginLeft: 10,
+  marginTop: 25,
 },
 badge: {
   position: 'absolute',
