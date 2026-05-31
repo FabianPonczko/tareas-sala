@@ -12,6 +12,7 @@ import {
   Alert,
   ActivityIndicator,
   ScrollView,
+  TextInput
 } from 'react-native';
 
 import axios from 'axios';
@@ -24,8 +25,6 @@ import { useAuth } from
 
   import { socket } from '../services/socket';
 
-  import TareasScreen from './TareasScreen';
-import { TextInput } from 'react-native-gesture-handler';
 
 
 import { useNavigation } from '@react-navigation/native';
