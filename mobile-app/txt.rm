@@ -1,0 +1,2 @@
+npx expo prebuild 
+npx expo prebuild --clean
