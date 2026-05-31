@@ -25,6 +25,12 @@ import {
   navigate,
 } from './src/navigation/navigationRef';
 
+
+import 'react-native-gesture-handler';
+
+import {
+  GestureHandlerRootView,
+} from 'react-native-gesture-handler';
 // =====================================
 // CONFIG PUSH NOTIFICATIONS
 // =====================================
@@ -188,8 +194,11 @@ if (dataTraida?.tareaId) {
 
 export default function App() {
   return (
+    <GestureHandlerRootView style={{ flex: 1 }}>
+
     <AuthProvider>
       <RootApp />
     </AuthProvider>
+    </GestureHandlerRootView>
   );
 }

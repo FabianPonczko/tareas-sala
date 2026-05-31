@@ -497,7 +497,11 @@ const API_URL =
 // SCREEN
 // =====================================
 
-export default function TareasScreen({fechaAfiltrar}) {
+export default function TareasScreen({route}) {
+  
+  const fechaAfiltrar =
+  route?.params?.fecha;
+  
   const {
     token,
     usuario,
@@ -630,7 +634,7 @@ export default function TareasScreen({fechaAfiltrar}) {
   
 }, []);
 
-// console.log("fechaafiltrar",fechaAfiltrar)
+console.log("fechaafiltrar",fechaAfiltrar)
 
   // =====================================
   // REFRESH
@@ -782,7 +786,7 @@ export default function TareasScreen({fechaAfiltrar}) {
       </Text>
 
       <Text style={styles.subtitle}>
-        {usuario?.turnoActual}
+        {usuario?.turnoActual} {" "}{!fechaAfiltrar?hoy:fechaAfiltrar}
       </Text>
 
       
@@ -978,8 +982,6 @@ export default function TareasScreen({fechaAfiltrar}) {
               >
                 <Text style={styles.buttonText}>
                   CHAT
-                </Text>
-
                 {mensajesPendientes[item._id] > 0 && (
                   <View style={styles.badge}>
                     <Text style={styles.badgeText}>
@@ -987,6 +989,8 @@ export default function TareasScreen({fechaAfiltrar}) {
                     </Text>
                   </View>
                 )}
+                </Text>
+
               </TouchableOpacity>
           </View>
         )}
