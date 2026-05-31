@@ -78,3 +78,6 @@ Thumbs.db
 
 backend/serviceAccountKey.json
 mobile-app/google-services.json
+/android
+/mobile-app/android
+/backend/android
