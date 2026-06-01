@@ -385,6 +385,7 @@ export default function AdminScreen() {
           <Picker.Item
             label="Seleccionar sabor"
             value=""
+            color="#000"
           />
 
           {sabores.map((s) => (
@@ -392,6 +393,7 @@ export default function AdminScreen() {
               key={s._id}
               label={s.nombre}
               value={s._id}
+              color="#000"
             />
           ))}
         </Picker>
@@ -420,6 +422,7 @@ export default function AdminScreen() {
           <Picker.Item
             label="Seleccionar tanque"
             value=""
+            color="#000"
           />
 
           {tanques.map((t) => (
@@ -427,6 +430,7 @@ export default function AdminScreen() {
               key={t._id}
               label={t.numero}
               value={t._id}
+              color="#000"
             />
           ))}
         </Picker>
@@ -449,11 +453,13 @@ export default function AdminScreen() {
                 style={styles.inputbox}
                 keyboardType="numeric"
                 placeholder="Ej: 120"
+                 placeholderTextColor="#666"
                 value={unidades}
                 onChangeText={(value) =>
                   setUnidades(value)
                 }
                  maxLength={3}
+                 
             />
             
             </View>
@@ -680,7 +686,7 @@ export default function AdminScreen() {
               Filtrar Tareas por fecha
             </Text>
                        
-            <TextInput style={{maxWidth:405,textAlign:"center"}}
+            <TextInput style={{maxWidth:405,textAlign:"center", Color:"#666"}}
               type="date"
               value={fechaAfiltrar}
               onChangeText={setFechaAfiltrar}>
@@ -878,5 +884,6 @@ inputbox: {
   paddingHorizontal: 12,
   paddingVertical: 10,
   backgroundColor: '#FAFAFA',
+  color:"#000"
 },
   });

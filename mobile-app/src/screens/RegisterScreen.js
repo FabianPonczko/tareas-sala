@@ -145,7 +145,7 @@ export default function RegisterScreen() {
 
         <TextInput
           placeholder="Nombre"
-
+           placeholderTextColor="#666"
           style={styles.input}
 
           value={form.nombre}
@@ -163,7 +163,7 @@ export default function RegisterScreen() {
 
         <TextInput
           placeholder="Email"
-
+           placeholderTextColor="#666"
           style={styles.input}
 
           keyboardType="email-address"
@@ -185,7 +185,7 @@ export default function RegisterScreen() {
 
         <TextInput
           placeholder="Contraseña"
-
+           placeholderTextColor="#666"
           style={styles.input}
 
           secureTextEntry

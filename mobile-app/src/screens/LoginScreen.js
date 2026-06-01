@@ -140,7 +140,7 @@ export default function LoginScreen() {
 
         <TextInput
           placeholder="Email"
-
+           placeholderTextColor="#666"
           style={styles.input}
 
           autoCapitalize="none"
@@ -159,7 +159,7 @@ export default function LoginScreen() {
 
         <TextInput
           placeholder="Contraseña"
-
+           placeholderTextColor="#666"
           style={styles.input}
 
           secureTextEntry
