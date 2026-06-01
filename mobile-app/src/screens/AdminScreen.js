@@ -356,7 +356,8 @@ export default function AdminScreen() {
     <ScrollView
       style={styles.container}
     >
-
+      
+      
       <Text style={styles.title}>
         Panel Administrador
       </Text>
@@ -690,7 +691,7 @@ export default function AdminScreen() {
               Filtrar Tareas por fecha
             </Text>
                        
-            <TextInput style={{maxWidth:405,textAlign:"center", Color:"#666"}}
+            <TextInput style={{width:"100%",textAlign:"center", Color:"#666"}}
               type="date"
               value={fechaAfiltrar}
               onChangeText={setFechaAfiltrar}>
@@ -796,14 +797,19 @@ const styles =
 
     pickerBox: {
       backgroundColor:
-        '#fff',
-      borderRadius: 14,
+        '#DDD',
+      borderRadius: 20,
+      height:50,
       marginBottom: 16,
       overflow: 'hidden',
+      padding:5
     },
 
     picker:{
-      color:"#666"
+      color:"#666",
+      borderRadius:16,
+      padding:10,
+      height:50
     },
 
     turnosContainer: {
@@ -850,6 +856,7 @@ const styles =
       
     },
      summaryTitle1: {
+     
       fontSize: 18,
       fontWeight: 'bold',
       marginBottom: 10,
@@ -887,7 +894,7 @@ const styles =
 
 inputLabel: {
   fontSize: 12,
-  color: '#666',
+  color: '#DDD',
   marginBottom: 6,
   fontWeight: '600',
 },
@@ -895,9 +902,9 @@ inputLabel: {
 inputbox: {
   fontSize: 18,
   fontWeight: 'bold',
-  borderWidth: 1,
+  borderWidth: 5,
   borderColor: '#DDD',
-  borderRadius: 10,
+  borderRadius: 20,
   paddingHorizontal: 12,
   paddingVertical: 10,
   backgroundColor: '#FAFAFA',
