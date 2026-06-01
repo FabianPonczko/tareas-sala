@@ -7,6 +7,7 @@ const jwt =
 const Usuario =
   require('../models/Usuario');
 
+  
 
 // =====================================
 // REGISTER

@@ -39,7 +39,7 @@
 //   };
 // }
 import React, {
-  useState,
+  useState,useRef
 } from 'react';
 
 import {
@@ -61,7 +61,9 @@ import {
 } from '../context/AuthContext';
 
 
-
+const login = {
+  
+}
 
 // =====================================
 // SCREEN
@@ -121,6 +123,8 @@ export default function LoginScreen() {
       }
     };
 
+    // Creamos la referencia para el input de la contraseña
+    const passwordInputRef = useRef<TextInput>(null);
 
   // =====================================
   // UI
@@ -130,9 +134,9 @@ export default function LoginScreen() {
     <View style={styles.container}>
 
       <View style={styles.card}>
-
+      
         <Text style={styles.title}>
-          Sistema Tareas
+          Tareas Sala
         </Text>
 
 
@@ -140,35 +144,41 @@ export default function LoginScreen() {
 
         <TextInput
           placeholder="Email"
-           placeholderTextColor="#666"
+          placeholderTextColor="#666"
           style={styles.input}
-
+          
           autoCapitalize="none"
-
+          
           keyboardType="email-address"
-
+          
           value={email}
-
+          
           onChangeText={
             setEmail
           }
-        />
+          returnKeyType="next" // Cambia el botón a "Siguiente"
+          onSubmitEditing={() => passwordInputRef.current?.focus()} // Pasa al siguiente input
+          
+          />
 
 
         {/* PASSWORD */}
 
         <TextInput
-          placeholder="Contraseña"
-           placeholderTextColor="#666"
+          ref={passwordInputRef} // Asigna la referencia aquí
+          placeholder="••••••••"
+          placeholderTextColor="#666"
           style={styles.input}
-
-          secureTextEntry
-
+          secureTextEntry={true}
+          autoCapitalize="none"
+          autoCorrect={false}
           value={password}
 
           onChangeText={
             setPassword
           }
+          returnKeyType="done" // Cambia el botón a "Hecho"
+          onSubmitEditing={handleLogin} // Ejecuta el login directamente
         />
 
 
@@ -179,24 +189,24 @@ export default function LoginScreen() {
           onPress={
             handleLogin
           }
-        >
+          >
 
           {loading ? (
             <ActivityIndicator
-              color="#fff"
+            color="#fff"
             />
           ) : (
             <Text
-              style={
-                styles.buttonText
-              }
+            style={
+              styles.buttonText
+            }
             >
               Ingresar
             </Text>
           )}
 
         </TouchableOpacity>
-
+      
 
         {/* REGISTER BUTTON */}
 
@@ -275,6 +285,8 @@ const styles =
 
       backgroundColor:
         '#fafafa',
+
+      color:"#666"
     },
 
     button: {

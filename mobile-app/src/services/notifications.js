@@ -109,11 +109,11 @@ export const registrarPushToken =
       // TOKEN
 
       const tokenData =
-        await Notifications
-          .getExpoPushTokenAsync({
-    projectId:
-      Constants.easConfig?.projectId
-  });
+        await Notifications.getExpoPushTokenAsync({
+        projectId:
+        Constants.expoConfig?.extra?.eas?.projectId
+        // Constants.easConfig?.projectId
+      });
 
           console.log(
           'TOKEN DATA:',

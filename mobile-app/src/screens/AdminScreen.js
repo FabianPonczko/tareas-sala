@@ -12,7 +12,8 @@ import {
   Alert,
   ActivityIndicator,
   ScrollView,
-  TextInput
+  TextInput,
+  Platform
 } from 'react-native';
 
 import axios from 'axios';
@@ -28,6 +29,8 @@ import { useAuth } from
 
 
 import { useNavigation } from '@react-navigation/native';
+
+import  DateTimePicker  from '@react-native-community/datetimepicker';
 
 // =====================================
 // API
@@ -374,18 +377,19 @@ export default function AdminScreen() {
       </Text>
 
       <View style={styles.pickerBox}>
-        <Picker
+        <Picker style={styles.picker}
           selectedValue={
             selectedSabor
           }
           onValueChange={
             setSelectedSabor
           }
+          
         >
           <Picker.Item
             label="Seleccionar sabor"
             value=""
-            color="#000"
+           
           />
 
           {sabores.map((s) => (
@@ -393,7 +397,7 @@ export default function AdminScreen() {
               key={s._id}
               label={s.nombre}
               value={s._id}
-              color="#000"
+             
             />
           ))}
         </Picker>
@@ -411,7 +415,7 @@ export default function AdminScreen() {
       </Text>
 
       <View style={styles.pickerBox}>
-        <Picker
+        <Picker style={styles.picker}
           selectedValue={
             selectedTanque
           }
@@ -422,7 +426,7 @@ export default function AdminScreen() {
           <Picker.Item
             label="Seleccionar tanque"
             value=""
-            color="#000"
+            
           />
 
           {tanques.map((t) => (
@@ -430,7 +434,7 @@ export default function AdminScreen() {
               key={t._id}
               label={t.numero}
               value={t._id}
-              color="#000"
+             
             />
           ))}
         </Picker>
@@ -475,7 +479,7 @@ export default function AdminScreen() {
       </Text>
 
       <View style={styles.pickerBox}>
-        <Picker
+        <Picker style={styles.picker}
           selectedValue={
             selectedDisolutor
           }
@@ -692,6 +696,15 @@ export default function AdminScreen() {
               onChangeText={setFechaAfiltrar}>
            
             </TextInput>
+          
+           <DateTimePicker
+              value={fechaAfiltrar}
+               mode="date" // Opciones: "date", "time", "datetime"
+               display={Platform.OS === 'ios' ? 'spinner' : 'calendar'} // 'spinner', 'calendar', 'clock' o 'default'
+              onChange={setFechaAfiltrar}
+               maximumDate={new Date()} // Evita seleccionar fechas futuras
+               minimumDate={new Date(1920, 0, 1)}
+            />
             
           <TouchableOpacity
                      style={[
@@ -787,6 +800,10 @@ const styles =
       borderRadius: 14,
       marginBottom: 16,
       overflow: 'hidden',
+    },
+
+    picker:{
+      color:"#666"
     },
 
     turnosContainer: {

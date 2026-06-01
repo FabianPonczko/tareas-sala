@@ -365,6 +365,7 @@ const styles =
 
       backgroundColor:
         '#fafafa',
+      color:"#666"
     },
 
     label: {

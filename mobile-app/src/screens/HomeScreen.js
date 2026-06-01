@@ -65,7 +65,7 @@ export default function HomeScreen() {
           }
         >
           Sistema de tareas
-          industriales
+          Sala de bebidas
         </Text>
       </View>
 
@@ -349,7 +349,7 @@ const styles =
     },
 
     subtitle: {
-      fontSize: 16,
+      fontSize: 12,
       color: '#666',
       marginTop: 4,
     },
