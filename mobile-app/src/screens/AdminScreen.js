@@ -111,7 +111,9 @@ export default function AdminScreen() {
 
   const [fecha, setFecha] =  useState(new Date().toISOString().split('T')[0]);
 
-  const [fechaAfiltrar, setFechaAfiltrar] =  useState(new Date().toISOString().split('T')[0]);
+  // const [fechaAfiltrar, setFechaAfiltrar] =  useState(new Date().toISOString().split('T')[0]);
+const [fechaAfiltrar, setFechaAfiltrar] =
+  useState(new Date());
 
   const hoy = new Date()
         .toISOString()
@@ -564,7 +566,7 @@ export default function AdminScreen() {
   </Text>
 
   {
-    usuariosOnline.map((u) => (
+    Array.isArray(usuariosOnline) && usuariosOnline.map((u) => (
 
       <View
         key={u._id}
@@ -692,7 +694,6 @@ export default function AdminScreen() {
             </Text>
                        
             <TextInput style={{width:"100%",textAlign:"center", Color:"#666"}}
-              type="date"
               value={fechaAfiltrar}
               onChangeText={setFechaAfiltrar}>
            
@@ -700,11 +701,12 @@ export default function AdminScreen() {
           
            <DateTimePicker
               value={fechaAfiltrar}
-               mode="date" // Opciones: "date", "time", "datetime"
-               display={Platform.OS === 'ios' ? 'spinner' : 'calendar'} // 'spinner', 'calendar', 'clock' o 'default'
-              onChange={setFechaAfiltrar}
-               maximumDate={new Date()} // Evita seleccionar fechas futuras
-               minimumDate={new Date(1920, 0, 1)}
+              mode="date"
+              onChange={(event, selectedDate) => {
+                if (selectedDate) {
+                  setFechaAfiltrar(selectedDate);
+                }
+              }}
             />
             
           <TouchableOpacity
@@ -716,9 +718,15 @@ export default function AdminScreen() {
                        },
                      ]}
                      onPress={() =>
-                       navigation.navigate(
-                         'Tareas',{fecha:fechaAfiltrar}
-                       )
+                      navigation.navigate(
+                        'Tareas',
+                        {
+                          fecha:
+                            fechaAfiltrar
+                              .toISOString()
+                              .split('T')[0]
+                        }
+                      )
                      }
                    >
                      <Text

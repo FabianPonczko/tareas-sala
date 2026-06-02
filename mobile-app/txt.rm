@@ -2,3 +2,5 @@ npx expo prebuild
 npx expo prebuild --clean
 cd android
 ./gradlew assembleRelease
+
+local.properties  :  sdk.dir=C:/Users/roponczko/Backup fponczko/Documents/android
