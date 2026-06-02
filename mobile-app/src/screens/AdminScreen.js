@@ -13,8 +13,7 @@ import {
   ActivityIndicator,
   ScrollView,
   TextInput,
-  Platform
-} from 'react-native';
+  } from 'react-native';
 
 import axios from 'axios';
 
@@ -30,7 +29,6 @@ import { useAuth } from
 
 import { useNavigation } from '@react-navigation/native';
 
-import  DateTimePicker  from '@react-native-community/datetimepicker';
 
 // =====================================
 // API
@@ -111,9 +109,8 @@ export default function AdminScreen() {
 
   const [fecha, setFecha] =  useState(new Date().toISOString().split('T')[0]);
 
-  // const [fechaAfiltrar, setFechaAfiltrar] =  useState(new Date().toISOString().split('T')[0]);
-const [fechaAfiltrar, setFechaAfiltrar] =
-  useState(new Date());
+  const [fechaAfiltrar, setFechaAfiltrar] =  useState(new Date().toISOString().split('T')[0]);
+
 
   const hoy = new Date()
         .toISOString()
@@ -699,16 +696,6 @@ const [fechaAfiltrar, setFechaAfiltrar] =
            
             </TextInput>
           
-           <DateTimePicker
-              value={fechaAfiltrar}
-              mode="date"
-              onChange={(event, selectedDate) => {
-                if (selectedDate) {
-                  setFechaAfiltrar(selectedDate);
-                }
-              }}
-            />
-            
           <TouchableOpacity
                      style={[
                        styles.sendButton,
