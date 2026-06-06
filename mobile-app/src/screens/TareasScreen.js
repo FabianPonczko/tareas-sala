@@ -750,16 +750,18 @@ export default function TareasScreen({route}) {
 
  const hoy = new Date().toLocaleDateString('sv-SE');
   
+
+
   const tareasTurno =
    tareas.filter(
     (t) =>
       t.turno == usuario?.turnoActual &&
-      t.estado !== 'FINALIZADO' &&
+      //  fechaAfiltrar == hoy ? null: t.estado !== 'FINALIZADO' &&
       t.fecha.split("T")[0] ==   (fechaAfiltrar || hoy )
         
       );
      
-      console.log("tareas turno ",tareasTurno)
+  
 
   // =====================================
   // LOADING
@@ -894,7 +896,7 @@ export default function TareasScreen({route}) {
             
             
             
-            {item.estado === "ACEPTADO" && 
+            {item.estado === "ACEPTADO" || item.sap && 
             <Text style={
                 styles.cardTitle
               }
@@ -953,6 +955,19 @@ export default function TareasScreen({route}) {
                 item.tarea
                   ?.disolutor
                   ?.numero
+              }
+            </Text>
+
+            <Text
+              style={
+                styles.cardText
+              }
+            >
+              Turno:
+              {' '}
+              {
+                item.turno
+                  
               }
             </Text>
 

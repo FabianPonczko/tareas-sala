@@ -109,7 +109,7 @@ export default function AdminScreen() {
 
   const [fecha, setFecha] =  useState(new Date().toLocaleDateString('sv-SE'));
 
-  const [fechaAfiltrar, setFechaAfiltrar] =  useState(new Date().toISOString().split('T')[0]);
+  const [fechaAfiltrar, setFechaAfiltrar] =  useState(new Date().toLocaleDateString('sv-SE'));
 
 
   
@@ -668,7 +668,7 @@ const hoy = new Date().toLocaleDateString('sv-SE');
                         styles.sendButtonText
                       }
                      >
-                       Ver Tareas activas
+                       Ver Tareas
                      </Text>
                    </TouchableOpacity>
                  
@@ -686,7 +686,7 @@ const hoy = new Date().toLocaleDateString('sv-SE');
               styles.summaryTitle1
             }
           >
-              Filtrar Tareas por fecha
+              Fecha a filtrar (yyyy-mm-dd)
             </Text>
                        
             <TextInput style={{width:"100%",textAlign:"center", Color:"#666"}}
@@ -718,7 +718,7 @@ const hoy = new Date().toLocaleDateString('sv-SE');
                         styles.sendButtonText
                       }
                      >
-                       Tareas por fecha
+                       Filtrar Tareas por fecha
                      </Text>
                    </TouchableOpacity>
             
