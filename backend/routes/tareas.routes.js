@@ -11,6 +11,7 @@ const {
   obtenerTareas,
   actualizarEstado,
    obtenerTareasActivas,
+   actualizarSap,
   // crearTareaAsignada,
   // obtenerTareasAsignadas,
   // obtenerTareasPrefijadas,
@@ -29,6 +30,7 @@ router.get(
   obtenerTareasActivas
 );
 
+
 router.post(
   '/',
   crearTarea
@@ -38,6 +40,12 @@ router.put(
   '/:id/estado',
   auth,
   actualizarEstado
+);
+
+router.put(
+  '/:id/sap',
+  auth,
+  actualizarSap
 );
 // router.get('/prefijadas', obtenerTareasPrefijadas);
 

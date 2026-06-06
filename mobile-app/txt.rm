@@ -3,4 +3,5 @@ npx expo prebuild --clean
 cd android
 ./gradlew assembleRelease
 
-local.properties  :  sdk.dir=C:/Users/roponczko/Backup-fponczko/Documents/android
+local.properties y adentro lo siguiente:
+sdk.dir=C:\Users\fabian\AppData\Local\Android\Sdk

@@ -169,6 +169,9 @@ const tareaAsignadaSchema =
         default:
           'PENDIENTE',
       },
+      sap:{
+        type: Number,
+      },
 
       finalizada: {
         type: Boolean,

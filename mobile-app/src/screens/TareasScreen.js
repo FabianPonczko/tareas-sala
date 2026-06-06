@@ -472,6 +472,7 @@ import {
   TouchableOpacity,
   RefreshControl,
   Alert,
+  TextInput,
 } from 'react-native';
 
 import axios from 'axios';
@@ -501,7 +502,10 @@ export default function TareasScreen({route}) {
   
   const fechaAfiltrar =
   route?.params?.fecha;
-  
+
+  const [numeroSap, setNumeroSap] =
+  useState("");
+
   const {
     token,
     usuario,
@@ -634,7 +638,8 @@ export default function TareasScreen({route}) {
   
 }, []);
 
-console.log("fechaafiltrar",fechaAfiltrar)
+
+
 
   // =====================================
   // REFRESH
@@ -648,6 +653,51 @@ console.log("fechaafiltrar",fechaAfiltrar)
       await obtenerTareas();
     };
 
+
+  // =====================================
+  // ACTUALIZAR SAP
+  // =====================================
+
+  const actualizarSap =
+    async (
+      tareaId,
+      sap
+    ) => {
+
+      try {
+
+        const response =
+          await axios.put(
+            `${API_URL}/${tareaId}/sap`,
+            {
+              sap,
+            },
+            {
+              headers: {
+                Authorization:
+                  `Bearer ${token}`,
+              },
+            }
+          );
+
+        setTareas((prev) =>
+          prev.map((t) =>
+            t._id === tareaId
+              ? response.data
+              : t
+          )
+        );
+
+      } catch (error) {
+
+        console.log(error);
+
+        Alert.alert(
+          'Error',
+          'No se pudo actualizar'
+        );
+      }
+    };
 
   // =====================================
   // ACTUALIZAR ESTADO
@@ -694,26 +744,22 @@ console.log("fechaafiltrar",fechaAfiltrar)
       }
     };
 
-
   // =====================================
   // FILTRAR TURNO
   // =====================================
 
-  const hoy = new Date()
-        .toISOString()
-        .split('T')[0]
+ const hoy = new Date().toLocaleDateString('sv-SE');
   
   const tareasTurno =
    tareas.filter(
     (t) =>
-      t.turno ==
-        usuario?.turnoActual &&
-      t.estado !==
-        'FINALIZADO' &&
-        !fechaAfiltrar?hoy:fechaAfiltrar == t.createdAt.split("T")[0]
+      t.turno == usuario?.turnoActual &&
+      t.estado !== 'FINALIZADO' &&
+      t.fecha.split("T")[0] ==   (fechaAfiltrar || hoy )
         
       );
      
+      console.log("tareas turno ",tareasTurno)
 
   // =====================================
   // LOADING
@@ -833,6 +879,7 @@ console.log("fechaafiltrar",fechaAfiltrar)
       styles.finalizadoCard,
   ]}
           >
+            <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}  >
 
             <Text
               style={
@@ -844,6 +891,32 @@ console.log("fechaafiltrar",fechaAfiltrar)
                   ?.nombre
               }
             </Text>
+            
+            
+            
+            {item.estado === "ACEPTADO" && 
+            <Text style={
+                styles.cardTitle
+              }
+            >
+              
+              
+              
+              Sap: {item.sap || 
+              <TextInput    
+              placeholder="Número SAP"
+              value={numeroSap}
+              onChangeText={setNumeroSap} 
+              keyboardType="numeric"
+              style={{
+                borderWidth: 1, }
+              }
+              />
+              }
+            </Text>
+            }
+              </View>
+
               <Text
               style={
                 styles.cardText
@@ -896,14 +969,20 @@ console.log("fechaafiltrar",fechaAfiltrar)
 
             <View
               style={
-                styles.buttonsRow
+                styles.buttonsRow 
               }
+              
             >
 
-              {usuario?.rol !=="ADMIN" && <TouchableOpacity
-                style={
-                  styles.leidoButton
+              {usuario?.rol !=="ADMIN" && 
+              
+              <TouchableOpacity
+                style={[
+                  styles.leidoButton,
+                  item.estado === "LEIDO" || item.estado === "ACEPTADO" ? { backgroundColor: '#A5A5A5' } : null
+                ]
                 }
+                disabled={item.estado === "LEIDO" || item.estado === "ACEPTADO" ? true : null}
 
                 onPress={() =>
                   actualizarEstado(
@@ -924,29 +1003,40 @@ console.log("fechaafiltrar",fechaAfiltrar)
 
               
               {usuario?.rol !=="ADMIN" && <TouchableOpacity
-                style={
-                  styles.aceptadoButton
+                style={[
+
+                  item.estado !== "ACEPTADO" ? styles.aceptadoButton : styles.buttonSap,
+                  item.estado === "ACEPTADO" ? { backgroundColor: '#18010d' } : null
+                ]
                 }
 
-                onPress={() =>
+                onPress={() => item.estado !== "ACEPTADO" ?
                   actualizarEstado(
                     item._id,
                     'ACEPTADO'
-                  )
+                  ):
+                   numeroSap ? actualizarSap(
+                    item._id,
+                    numeroSap
+                  ) : Alert.alert("Error","Ingrese un número de SAP válido")
                 }
               >
-                <Text
+                <Text 
                   style={
-                    styles.buttonText
+                     styles.buttonText 
                   }
                 >
-                  ACEPTAR
+                  {item.estado === "ACEPTADO" ? "MODIFICAR SAP" : "ACEPTAR"}
                 </Text>
               </TouchableOpacity>}
 
+
+
               <TouchableOpacity
-                disabled = {item.estado== "FINALIZADO"?true:null}
-                style={styles.finalizadoButton}
+                disabled = {item.sap ? null : true}
+                style={[styles.finalizadoButton,
+                  item.estado !== "ACEPTADO" || !item.sap ? { backgroundColor: '#A5A5A5' } : null
+                ]}
                 onPress={() =>
                   actualizarEstado(
                     item._id,
@@ -1084,8 +1174,7 @@ const styles =
 
     leidoButton: {
       flex: 1,
-      backgroundColor:
-        '#FF9500',
+      backgroundColor: '#FF9500',
       padding: 12,
       borderRadius: 12,
       marginRight: 10,
@@ -1113,6 +1202,13 @@ const styles =
       color: '#fff',
       fontWeight: 'bold',
       fontSize:12,
+    },
+    buttonSap: {
+      flex: 1,
+      backgroundColor: '#18010d',   
+      padding: 12,
+      borderRadius: 12,
+      alignItems: 'center',
     },
     pendienteCard: {
   borderLeftWidth: 8,

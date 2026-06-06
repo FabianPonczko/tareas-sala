@@ -104,6 +104,46 @@ const actualizarEstado = async (req, res) => {
   }
 };
 
+// // =====================
+// // ACTUALIZAR SAP
+// // =====================
+const actualizarSap = async (req, res) => {
+  try {
+    const { sap } = req.body;
+
+    const tarea = await TareaAsignada.findByIdAndUpdate(
+  req.params.id,
+  {
+    sap,
+    actualizadoPor: req.user.id,
+  },
+  { new: true }
+      )
+      .populate({
+        path: 'tarea',
+        populate: [
+          {
+            path: 'tanque',
+          }, 
+          {
+            path: 'unidades',
+          },
+          {
+            path: 'disolutor',
+          },
+          {
+            path: 'sabor',
+          },
+        ],
+      });
+
+    global.io.emit('sapActualizado', tarea);
+
+    res.json(tarea);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 // module.exports = {
 //   obtenerTareasAsignadas,
 //   crearTareaAsignada,
@@ -315,5 +355,6 @@ module.exports = {
    crearTarea,
   obtenerTareas,
   actualizarEstado,
+  actualizarSap,
   obtenerTareasActivas,
 };

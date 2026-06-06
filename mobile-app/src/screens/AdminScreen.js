@@ -107,14 +107,13 @@ export default function AdminScreen() {
 
   const [selectedTurno, setSelectedTurno] = useState('MAÑANA');
 
-  const [fecha, setFecha] =  useState(new Date().toISOString().split('T')[0]);
+  const [fecha, setFecha] =  useState(new Date().toLocaleDateString('sv-SE'));
 
   const [fechaAfiltrar, setFechaAfiltrar] =  useState(new Date().toISOString().split('T')[0]);
 
 
-  const hoy = new Date()
-        .toISOString()
-        .split('T')[0]
+  
+const hoy = new Date().toLocaleDateString('sv-SE');
 
     const obtenerTareasActivas =
   async () => {
@@ -710,8 +709,6 @@ export default function AdminScreen() {
                         {
                           fecha:
                             fechaAfiltrar
-                              .toISOString()
-                              .split('T')[0]
                         }
                       )
                      }
