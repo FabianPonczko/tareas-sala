@@ -230,7 +230,6 @@ import {
 const Stack =
   createNativeStackNavigator();
 
-
 // =====================================
 // NAVIGATOR
 // =====================================

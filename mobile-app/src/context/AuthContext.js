@@ -207,13 +207,7 @@ export const AuthProvider = ({
   //         'token'
   //       );
 
-  //       await AsyncStorage.removeItem(
-  //         'usuario'
-  //       );
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
+  
 
 const logout = async () => {
 

@@ -1,15 +1,16 @@
 {
-  "expo": {
+  "expo": { 
     "extra": {
       "eas": {
         "projectId": "e2f695a1-a784-489d-a61a-565be69d863c"
       }
     },
     "android": {
-      "package": "com.fabianponczko.mobileapp"
+      "package": "com.fabianponczko.mobileapp",
+      "googleServicesFile": "./google-services.json"
     },
     "plugins": [
-      "@react-native-community/datetimepicker"
+      "expo-notifications"
     ]
   }
 }

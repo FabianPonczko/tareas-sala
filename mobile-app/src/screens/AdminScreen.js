@@ -1,4 +1,3 @@
-
 import React, {
   useEffect,
   useState,
@@ -604,7 +603,6 @@ const hoy = new Date().toLocaleDateString('sv-SE');
           styles.summaryCard
         }
       >
-
         <Text
           style={
             styles.summaryTitle
@@ -788,20 +786,20 @@ const styles =
     },
 
     pickerBox: {
-      backgroundColor:
-        '#DDD',
+      backgroundColor:'#DDD',
       borderRadius: 20,
-      height:50,
+      height:60,
       marginBottom: 16,
       overflow: 'hidden',
-      padding:5
+      padding:5,
     },
 
     picker:{
-      color:"#666",
-      borderRadius:16,
-      padding:10,
-      height:50
+      color:"#c2bdbd",
+      borderRadius:15,
+      padding:5,
+      height:60,
+      fontSize: 14,
     },
 
     turnosContainer: {

@@ -4,4 +4,4 @@ cd android
 ./gradlew assembleRelease
 
 local.properties y adentro lo siguiente:
-sdk.dir=C:\Users\fabian\AppData\Local\Android\Sdk
+sdk.dir=C:/Users/fabian/AppData/Local/Android/Sdk

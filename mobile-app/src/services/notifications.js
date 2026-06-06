@@ -108,12 +108,37 @@ export const registrarPushToken =
 
       // TOKEN
 
+
+console.log(
+  'PROJECT ID:',
+  Constants.expoConfig?.extra?.eas?.projectId
+);
+
+console.log(
+  'EAS CONFIG:',
+  Constants.easConfig?.projectId
+);
+
+const projectId =
+  Constants.easConfig?.projectId ??
+  Constants.expoConfig?.extra?.eas?.projectId;
+
+console.log(
+  'PROJECT ID USADO:',
+  projectId
+);
+
+
+      // const tokenData =
+      //   await Notifications.getExpoPushTokenAsync({
+      //   projectId:
+      //   Constants.expoConfig?.extra?.eas?.projectId
+      //   // Constants.easConfig?.projectId
+      // });
       const tokenData =
-        await Notifications.getExpoPushTokenAsync({
-        projectId:
-        Constants.expoConfig?.extra?.eas?.projectId
-        // Constants.easConfig?.projectId
-      });
+  await Notifications.getExpoPushTokenAsync({
+    projectId,
+  });
 
           console.log(
           'TOKEN DATA:',
@@ -161,6 +186,10 @@ export const registrarPushToken =
         'ERROR PUSH:',
         error
       );
+      console.log(
+    'ERROR PUSH JSON:',
+    JSON.stringify(error)
+  );
 
       return null;
     }

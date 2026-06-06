@@ -1,45 +1,5 @@
-// import React, {
-//   useState,
-// } from 'react';
-
-// import axios from 'axios';
-
-// import {
-//   registrarPushToken,
-// } from '../services/notifications';
-
-// export default function LoginScreen() {
-//   const [email, setEmail] =
-//     useState('');
-
-//   const [password, setPassword] =
-//     useState('');
-
-//   const login = async () => {
-//     try {
-//       // Obtener token push
-//       const pushToken =
-//         await registrarPushToken();
-
-//       // Login
-//       const res =
-//         await axios.post(
-//           'http://10.24.138.167:3000/api/auth/login',
-//           {
-//             email,
-//             password,
-//             pushToken,
-//           }
-//         );
-
-//       console.log(res.data);
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
-// }
 import React, {
-  useState,useRef
+  useState
 } from 'react';
 
 import {
@@ -61,9 +21,7 @@ import {
 } from '../context/AuthContext';
 
 
-const login = {
-  
-}
+
 
 // =====================================
 // SCREEN
@@ -123,8 +81,7 @@ export default function LoginScreen() {
       }
     };
 
-    // Creamos la referencia para el input de la contraseña
-    const passwordInputRef = useRef<TextInput>(null);
+    
 
   // =====================================
   // UI
@@ -156,8 +113,6 @@ export default function LoginScreen() {
           onChangeText={
             setEmail
           }
-          returnKeyType="next" // Cambia el botón a "Siguiente"
-          onSubmitEditing={() => passwordInputRef.current?.focus()} // Pasa al siguiente input
           
           />
 
@@ -165,9 +120,6 @@ export default function LoginScreen() {
         {/* PASSWORD */}
 
         <TextInput
-          ref={passwordInputRef} // Asigna la referencia aquí
-          placeholder="••••••••"
-          placeholderTextColor="#666"
           style={styles.input}
           secureTextEntry={true}
           autoCapitalize="none"
@@ -177,8 +129,6 @@ export default function LoginScreen() {
           onChangeText={
             setPassword
           }
-          returnKeyType="done" // Cambia el botón a "Hecho"
-          onSubmitEditing={handleLogin} // Ejecuta el login directamente
         />
 
 
