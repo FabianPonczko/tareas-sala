@@ -28,6 +28,11 @@ import { useAuth } from
 
 import { useNavigation } from '@react-navigation/native';
 
+import DateTimePicker from '@react-native-community/datetimepicker';
+
+import {
+  SafeAreaView,
+} from 'react-native-safe-area-context';
 
 // =====================================
 // API
@@ -110,6 +115,7 @@ export default function AdminScreen() {
 
   const [fechaAfiltrar, setFechaAfiltrar] =  useState(new Date().toLocaleDateString('sv-SE'));
 
+  const [showDatePicker, setShowDatePicker] = useState(false);
 
   
 const hoy = new Date().toLocaleDateString('sv-SE');
@@ -322,6 +328,9 @@ const hoy = new Date().toLocaleDateString('sv-SE');
       }
     };
 
+    const formatearFecha = (fecha) => {
+      return fecha.toLocaleDateString('sv-SE');
+    };
 
   // =====================================
   // LOADING
@@ -349,12 +358,10 @@ const hoy = new Date().toLocaleDateString('sv-SE');
   // =====================================
 
   return (
-
+  <SafeAreaView style={{ flex: 1 }}>
     <ScrollView
       style={styles.container}
     >
-      
-      
       <Text style={styles.title}>
         Panel Administrador
       </Text>
@@ -390,7 +397,7 @@ const hoy = new Date().toLocaleDateString('sv-SE');
            
           />
 
-          {sabores.map((s) => (
+          {sabores.sort((a, b) => a.nombre.localeCompare(b.nombre)).map((s) => (
             <Picker.Item
               key={s._id}
               label={s.nombre}
@@ -425,9 +432,9 @@ const hoy = new Date().toLocaleDateString('sv-SE');
             label="Seleccionar tanque"
             value=""
             
-          />
+           />
 
-          {tanques.map((t) => (
+          {tanques.sort((a, b) => a.numero - b.numero).map((t) => (
             <Picker.Item
               key={t._id}
               label={t.numero}
@@ -455,7 +462,7 @@ const hoy = new Date().toLocaleDateString('sv-SE');
                 style={styles.inputbox}
                 keyboardType="numeric"
                 placeholder="Ej: 120"
-                 placeholderTextColor="#666"
+                 placeholderTextColor="#DDD"
                 value={unidades}
                 onChangeText={(value) =>
                   setUnidades(value)
@@ -657,7 +664,8 @@ const hoy = new Date().toLocaleDateString('sv-SE');
                      ]}
                      onPress={() =>
                        navigation.navigate(
-                         'Tareas',{fecha:hoy}
+                         'Tareas',
+                         {fecha:hoy, turno: selectedTurno}
                        )
                      }
                    >
@@ -666,7 +674,8 @@ const hoy = new Date().toLocaleDateString('sv-SE');
                         styles.sendButtonText
                       }
                      >
-                       Ver Tareas
+                      Tareas turno
+                      {" "}{selectedTurno}
                      </Text>
                    </TouchableOpacity>
                  
@@ -674,7 +683,7 @@ const hoy = new Date().toLocaleDateString('sv-SE');
         {/* <TareasScreen /> */}
 
 
-        <View
+        {/* <View
           style={
             styles.summaryCard}
         >
@@ -706,7 +715,7 @@ const hoy = new Date().toLocaleDateString('sv-SE');
                         'Tareas',
                         {
                           fecha:
-                            fechaAfiltrar
+                            fechaAfiltrar,turno: selectedTurno
                         }
                       )
                      }
@@ -722,16 +731,74 @@ const hoy = new Date().toLocaleDateString('sv-SE');
             
             
 
-            {/* <TextInput
-              value={fechaAfiltrar}
-              onChangeText={setFechaAfiltrar}
-              placeholder='yyyy-mm-dd'
-            >
-            </TextInput> */}
-        </View>
+           
+        </View> */}
 
             {/* {fechaAfiltrar !== fecha && <TareasScreen fechaAfiltrar={fechaAfiltrar}/>} */}
+    <View style={[styles.summaryCard, { borderWidth: 1, borderColor: '#252bd4' }]}> 
+      
+      <TouchableOpacity
+                     style={[
+                       styles.sendButton,
+                       {
+                         backgroundColor:
+                         '#38abdc',
+                        },
+                      ]}
+                      onPress={() =>
+                        navigation.navigate(
+                          'Tareas',
+                          {
+                            fecha:
+                            fechaAfiltrar,turno: selectedTurno
+                          }
+                        )
+                      }
+                      >
+                     <Text
+                         style={
+                           styles.sendButtonText
+                          }
+                          >
+                       Tareas por fecha({fechaAfiltrar})
+                     </Text>
+                   </TouchableOpacity>
+                  
+                  <TouchableOpacity
+                    style={{
+                      backgroundColor: '#fff',
+                      padding: 15,
+                      borderRadius: 12,
+                      alignItems: 'center',
+                      marginBottom: 15,
+                    }}
+                    onPress={() => setShowDatePicker(true)}
+                    >
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        fontWeight: 'bold',
+                      }}
+                      >
+                      {fechaAfiltrar}
+                    </Text>
+                  </TouchableOpacity>
+        </View>
+          
+      {showDatePicker && (
+        <DateTimePicker
+          value={new Date(fechaAfiltrar)}
+          mode="date"
+          display="default"
+          onChange={(event, selectedDate) => {
+            setShowDatePicker(false);
 
+            if (selectedDate) {
+              setFechaAfiltrar(selectedDate.toLocaleDateString('sv-SE'));
+            }
+          }}
+        />
+      )}
   
       <View
         style={{
@@ -740,6 +807,7 @@ const hoy = new Date().toLocaleDateString('sv-SE');
       />
 
     </ScrollView>
+  </SafeAreaView> 
   );
 }
 
@@ -791,7 +859,6 @@ const styles =
       height:60,
       marginBottom: 16,
       overflow: 'hidden',
-      padding:5,
     },
 
     picker:{
@@ -884,7 +951,7 @@ const styles =
 
 inputLabel: {
   fontSize: 12,
-  color: '#DDD',
+  // color: '#DDD',
   marginBottom: 6,
   fontWeight: '600',
 },

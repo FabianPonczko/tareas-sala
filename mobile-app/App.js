@@ -31,6 +31,11 @@ import 'react-native-gesture-handler';
 import {
   GestureHandlerRootView,
 } from 'react-native-gesture-handler';
+
+import {
+  SafeAreaProvider,
+} from 'react-native-safe-area-context';
+
 // =====================================
 // CONFIG PUSH NOTIFICATIONS
 // =====================================
@@ -195,10 +200,11 @@ if (dataTraida?.tareaId) {
 export default function App() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-
-    <AuthProvider>
-      <RootApp />
-    </AuthProvider>
+      <SafeAreaProvider>
+        <AuthProvider>
+          <RootApp />
+        </AuthProvider>
+      </SafeAreaProvider>
     </GestureHandlerRootView>
   );
 }

@@ -43,6 +43,9 @@ export default function TareasScreen({route}) {
   const fechaAfiltrar =
   route?.params?.fecha;
 
+  const turnoAfiltrar =
+  route?.params?.turno;
+
   const [numeroSap, setNumeroSap] =
   useState("");
 
@@ -293,17 +296,15 @@ export default function TareasScreen({route}) {
  const hoy = new Date().toLocaleDateString('sv-SE');
   
 
-  const tareasTurno =
-   tareas.filter(
+  const tareasTurno = tareas.filter(
     (t) =>
-      t.turno == usuario?.turnoActual &&
-    t.fecha.split("T")[0] ==   (fechaAfiltrar || hoy ) &&
-    (
-      usuario?.rol === "ADMIN" ||
-      t.estado !== "FINALIZADO"
-    )
-    
-    );
+      t.turno === (turnoAfiltrar || usuario?.turnoActual) &&
+      t.fecha.split("T")[0] === (fechaAfiltrar || hoy) &&
+      (
+        usuario?.rol === "ADMIN" ||
+        t.estado !== "FINALIZADO"
+      )
+  );
      
   
 
@@ -356,7 +357,7 @@ export default function TareasScreen({route}) {
           para el turno
           {' '}
           {
-            usuario?.turnoActual
+            turnoAfiltrar || usuario?.turnoActual
           }
         </Text>
 
@@ -378,7 +379,7 @@ export default function TareasScreen({route}) {
       </Text>
 
       <Text style={styles.subtitle}>
-        {usuario?.turnoActual} {" "}{!fechaAfiltrar?hoy:fechaAfiltrar}
+        {turnoAfiltrar || usuario?.turnoActual} {" "}{!fechaAfiltrar?hoy:fechaAfiltrar}
       </Text>
 
       
@@ -441,7 +442,7 @@ export default function TareasScreen({route}) {
             
             
             {(item.estado === "ACEPTADO" || item.estado === "FINALIZADO") &&(
-              <View style={{alignItems:'center',padding:30,borderradius:20,backgroundColor:'#8ccda197'}}
+              <View style={{minWidth:120,alignItems:'center',padding:5,borderRadius:10,backgroundColor:'#8ccda197'}}
               >
                 <Text style={styles.cardTitle}>
                     Sap: 

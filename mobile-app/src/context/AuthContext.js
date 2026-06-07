@@ -142,7 +142,7 @@ export const AuthProvider = ({
       }
       setToken(token);
       setUsuario(usuario);
-      connectSocket(token);
+      // connectSocket(token);
 
       axios.defaults.headers.common.Authorization =
         `Bearer ${token}`;

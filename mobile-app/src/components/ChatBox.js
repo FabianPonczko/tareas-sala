@@ -512,6 +512,9 @@ import {
   socket,
 } from '../services/socket';
 
+import {
+  SafeAreaView,
+} from 'react-native-safe-area-context';
 
 // =====================================
 // CONFIG API
@@ -796,6 +799,7 @@ export default function ChatBox({
       usuario?._id;
 
   return (
+    <SafeAreaView style={{ flex: 1 }}>
 
     <View style={styles.lineMessage}>
 
@@ -804,9 +808,9 @@ export default function ChatBox({
         style={[
           styles.userLine,
           esMio &&
-            styles.userLineMine,
+          styles.userLineMine,
         ]}
-      >
+        >
         {item.nombreUsuario}
       </Text>
 
@@ -828,9 +832,9 @@ export default function ChatBox({
         style={[
           styles.messageLine,
           esMio &&
-            styles.messageLineMine,
+          styles.messageLineMine,
         ]}
-      >
+        >
         {item.mensaje}
       </Text>
 
@@ -844,25 +848,26 @@ export default function ChatBox({
       {/* Eliminar */}
       {(esMio ||
         usuario?.rol ===
-          'ADMIN') && (
-        <TouchableOpacity
+        'ADMIN') && (
+          <TouchableOpacity
           onPress={() =>
             eliminarMensaje(
               item._id
             )
           }
-        >
+          >
           <Text
             style={
               styles.deleteLine
             }
-          >
+            >
             ✕
           </Text>
         </TouchableOpacity>
       )}
 
     </View>
+  </SafeAreaView>
   );
 };
 
