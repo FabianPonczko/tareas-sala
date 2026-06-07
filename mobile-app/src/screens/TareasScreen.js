@@ -46,6 +46,8 @@ export default function TareasScreen({route}) {
   const [numeroSap, setNumeroSap] =
   useState("");
 
+  const [sapInputs, setSapInputs] = useState({});
+
   const {
     token,
     usuario,
@@ -291,15 +293,17 @@ export default function TareasScreen({route}) {
  const hoy = new Date().toLocaleDateString('sv-SE');
   
 
-
   const tareasTurno =
    tareas.filter(
     (t) =>
       t.turno == usuario?.turnoActual &&
-      //  fechaAfiltrar == hoy ? null: t.estado !== 'FINALIZADO' &&
-      t.fecha.split("T")[0] ==   (fechaAfiltrar || hoy )
-        
-      );
+    t.fecha.split("T")[0] ==   (fechaAfiltrar || hoy ) &&
+    (
+      usuario?.rol === "ADMIN" ||
+      t.estado !== "FINALIZADO"
+    )
+    
+    );
      
   
 
@@ -402,24 +406,24 @@ export default function TareasScreen({route}) {
 
           <View
             style={[
-    styles.card,
+            styles.card,
 
-    item.estado ===
-      'PENDIENTE' &&
-      styles.pendienteCard,
+            item.estado ===
+              'PENDIENTE' &&
+              styles.pendienteCard,
 
-    item.estado ===
-      'LEIDO' &&
-      styles.leidoCard,
+            item.estado ===
+              'LEIDO' &&
+              styles.leidoCard,
 
-    item.estado ===
-      'ACEPTADO' &&
-      styles.aceptadoCard,
+            item.estado ===
+              'ACEPTADO' &&
+              styles.aceptadoCard,
 
-    item.estado ===
-      'FINALIZADO' &&
-      styles.finalizadoCard,
-  ]}
+            item.estado ===
+              'FINALIZADO' &&
+              styles.finalizadoCard,
+            ]}
           >
             <View style={{flexDirection:'row',justifyContent:'space-between',alignItems:'center'}}  >
 
@@ -436,27 +440,38 @@ export default function TareasScreen({route}) {
             
             
             
-            {item.estado === "ACEPTADO" || item.sap && 
-            <Text style={
-                styles.cardTitle
-              }
-            >
-              
-              
-              
-              Sap: {item.sap || 
-              <TextInput    
-              placeholder="Número SAP"
-              value={numeroSap}
-              onChangeText={setNumeroSap} 
-              keyboardType="numeric"
-              style={{
-                borderWidth: 1, }
-              }
-              />
-              }
-            </Text>
-            }
+            {(item.estado === "ACEPTADO" || item.estado === "FINALIZADO") &&(
+              <View style={{alignItems:'center',padding:30,borderradius:20,backgroundColor:'#8ccda197'}}
+              >
+                <Text style={styles.cardTitle}>
+                    Sap: 
+                </Text>
+
+                {item.sap ?
+                  <Text style={styles.cardTitle}
+                    key={item._id}
+                  >
+                    {item.sap}
+                  </Text>
+                  :  
+                  <TextInput
+                    placeholder="Número SAP"
+                    value={sapInputs[item._id] || ""}
+                    onChangeText={(text) =>
+                      setSapInputs(prev => ({
+                        ...prev,
+                        [item._id]: text,
+                      }))
+                    }
+                    keyboardType="numeric"
+                    style={{
+                      borderWidth: 1,
+                    }}
+                  />
+                }
+            </View>
+  )}
+
               </View>
 
               <Text
@@ -530,60 +545,65 @@ export default function TareasScreen({route}) {
             >
 
               {usuario?.rol !=="ADMIN" && 
-              
-              <TouchableOpacity
-                style={[
-                  styles.leidoButton,
-                  item.estado === "LEIDO" || item.estado === "ACEPTADO" ? { backgroundColor: '#A5A5A5' } : null
-                ]
-                }
-                disabled={item.estado === "LEIDO" || item.estado === "ACEPTADO" ? true : null}
+                <TouchableOpacity
+                  style={[
+                    styles.leidoButton,
+                    item.estado === "LEIDO" || item.estado === "ACEPTADO" || item.estado === "FINALIZADO" ? { backgroundColor: '#A5A5A5' } : null
+                  ]
+                  }
+                  disabled={item.estado === "LEIDO" || item.estado === "ACEPTADO" || item.estado === "FINALIZADO" ? true : null}
 
-                onPress={() =>
-                  actualizarEstado(
-                    item._id,
-                    'LEIDO'
-                  )
-                }
-              >
-                <Text
-                  style={
-                    styles.buttonText
+                  onPress={() =>
+                    actualizarEstado(
+                      item._id,
+                      'LEIDO'
+                    )
                   }
                 >
-                  LEÍDO
-                </Text>
-              </TouchableOpacity>}
+                  <Text
+                    style={
+                      styles.buttonText
+                    }
+                  >
+                    LEÍDO
+                  </Text>
+                </TouchableOpacity>
+              }
 
 
               
-              {usuario?.rol !=="ADMIN" && <TouchableOpacity
-                style={[
+              {usuario?.rol !=="ADMIN" && 
+                <TouchableOpacity
+                  style={[
 
-                  item.estado !== "ACEPTADO" ? styles.aceptadoButton : styles.buttonSap,
-                  item.estado === "ACEPTADO" ? { backgroundColor: '#18010d' } : null
-                ]
-                }
-
-                onPress={() => item.estado !== "ACEPTADO" ?
-                  actualizarEstado(
-                    item._id,
-                    'ACEPTADO'
-                  ):
-                   numeroSap ? actualizarSap(
-                    item._id,
-                    numeroSap
-                  ) : Alert.alert("Error","Ingrese un número de SAP válido")
-                }
-              >
-                <Text 
-                  style={
-                     styles.buttonText 
+                    item.estado !== "ACEPTADO" || item.sap ? styles.aceptadoButton : styles.buttonSap,
+                    item.estado === "ACEPTADO"  ? { backgroundColor: '#18010d' } : null
+                  ]
                   }
+
+                  onPress={() =>
+                    item.estado !== "ACEPTADO"
+                    ? actualizarEstado(item._id, "ACEPTADO")
+                    : sapInputs[item._id]
+                    ? actualizarSap(
+                        item._id,
+                        sapInputs[item._id]
+                      )
+                    : Alert.alert(
+                        "Error",
+                        "Ingrese un número de SAP válido"
+                      )
+                    }
                 >
-                  {item.estado === "ACEPTADO" ? "MODIFICAR SAP" : "ACEPTAR"}
-                </Text>
-              </TouchableOpacity>}
+                  <Text 
+                    style={
+                      styles.buttonText 
+                    }
+                  >
+                    {item.estado === "ACEPTADO" ? "MODIFICAR SAP" : "ACEPTAR"}
+                  </Text>
+                </TouchableOpacity>
+              }
 
 
 
@@ -604,7 +624,7 @@ export default function TareasScreen({route}) {
                 </Text>
               </TouchableOpacity>
               
-            </View>
+              </View>
 
               <TouchableOpacity
                 style={styles.chatButton}
@@ -637,13 +657,13 @@ export default function TareasScreen({route}) {
                 </Text>
 
               </TouchableOpacity>
-          </View>
-        )}
-      />
-      </View>
+                </View>
+               )}
+              />
+        </View>
     
-  );
-}
+      );
+    }
 
 
 // =====================================
@@ -703,11 +723,10 @@ const styles =
       marginBottom: 20,
       
       
-      
     },
 
     cardTitle: {
-      fontSize: 20,
+      fontSize: 18,
       fontWeight: 'bold',
       marginBottom: 8,
     },

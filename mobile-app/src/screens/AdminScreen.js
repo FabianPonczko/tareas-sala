@@ -795,7 +795,7 @@ const styles =
     },
 
     picker:{
-      color:"#c2bdbd",
+      color:"#222",
       borderRadius:15,
       padding:5,
       height:60,
