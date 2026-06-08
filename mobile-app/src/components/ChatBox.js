@@ -514,6 +514,7 @@ import {
 
 import {
   SafeAreaView,
+  
 } from 'react-native-safe-area-context';
 
 // =====================================
@@ -799,7 +800,6 @@ export default function ChatBox({
       usuario?._id;
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
 
     <View style={styles.lineMessage}>
 
@@ -867,7 +867,7 @@ export default function ChatBox({
       )}
 
     </View>
-  </SafeAreaView>
+
   );
 };
 
@@ -898,7 +898,7 @@ export default function ChatBox({
   // =====================================
 
   return (
-
+  <SafeAreaView style={{ flex: 1 }}>
     <KeyboardAvoidingView
       style={
         styles.container
@@ -906,14 +906,14 @@ export default function ChatBox({
       behavior={
         Platform.OS ===
         'ios'
-          ? 'padding'
-          : undefined
+        ? 'padding'
+        : undefined
       }
-    >
+      >
 
       <Text
         style={styles.title}
-      >
+        >
         Notas / Chat
       </Text>
 
@@ -929,7 +929,7 @@ export default function ChatBox({
         contentContainerStyle={{
           paddingBottom: 20,
         }}
-      />
+        />
 
       <View
         style={
@@ -947,7 +947,7 @@ export default function ChatBox({
             styles.input
           }
           multiline
-        />
+          />
 
         <TouchableOpacity
           style={
@@ -956,13 +956,13 @@ export default function ChatBox({
           onPress={
             enviarMensaje
           }
-        >
+          >
 
           <Text
             style={
               styles.buttonText
             }
-          >
+            >
             Enviar
           </Text>
 
@@ -971,6 +971,7 @@ export default function ChatBox({
       </View>
 
     </KeyboardAvoidingView>
+  </SafeAreaView>
   );
 }
 

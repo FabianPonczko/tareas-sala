@@ -1,5 +1,5 @@
 {
-  "expo": { 
+  "expo": {
     "extra": {
       "eas": {
         "projectId": "e2f695a1-a784-489d-a61a-565be69d863c"
@@ -11,6 +11,7 @@
     },
     "plugins": [
       "expo-notifications"
-    ]
+    ],
+    "owner": "fabianponczko"
   }
 }
