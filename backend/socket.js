@@ -192,27 +192,33 @@ const configureSocket = (
       // MENSAJE CHAT
       // =====================================
 
-      socket.on(
-        'mensajeChat',
-        (
-          data
-        ) => {
+      // socket.on(
+      //   'mensajeChat',
+      //   (
+      //     data
+      //   ) => {
 
-          io.to(
-            `task_${data.tareaId}`
-          ).emit(
-            'nuevoMensaje',
-            data
-          );
+      //     io.to(
+      //       `task_${data.tareaId}`
+      //     ).emit(
+      //       'nuevoMensaje',
+      //       data
+      //     );
           
-           io.emit(
-            'mensajeNoLeido',
-            {
-              tareaId: data.tareaId,
-            }
-          );
-        }
-      );
+      //     //  io.emit(
+      //     //   'mensajeNoLeido',
+      //     //   {
+      //     //     tareaId: data.tareaId,
+      //     //   }
+      //     // );
+      //      socket.broadcast.emit(
+      //         'mensajeNoLeido',
+      //         {
+      //           tareaId: data.tareaId,
+      //         }
+      //       );
+      //   }
+      // );
 
 
       // =====================================

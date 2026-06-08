@@ -228,6 +228,7 @@ const enviarMensaje =
           'mensajeNoLeido',
         {
           tareaId: tarea,
+          autorId: usuario._id,
         }
         );
 

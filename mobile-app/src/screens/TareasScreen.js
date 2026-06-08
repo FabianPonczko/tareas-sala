@@ -154,8 +154,14 @@ export default function TareasScreen({route}) {
   );
   socket.on(
     'mensajeNoLeido',
-    ({ tareaId }) => {
+    ({ tareaId, autorId }) => {
          
+       if (
+      String(autorId) ===
+      String(usuario._id)
+    ) {
+      return;
+    }
           setMensajesPendientes(
             prev => ({
               ...prev,
