@@ -97,6 +97,8 @@ export default function TareasScreen({route}) {
           setTareas(
             response.data
           );
+
+         
           
         } catch (error) {
           
@@ -155,19 +157,25 @@ export default function TareasScreen({route}) {
   socket.on(
     'mensajeNoLeido',
     ({ tareaId, autorId }) => {
-         
+         console.log("autorId", autorId)
+         console.log("usuario_id", usuario._id)
+         Alert.alert("autorId", autorId,"usuario_id", usuario._id)
        if (
       String(autorId) ===
       String(usuario._id)
     ) {
       return;
     }
-          setMensajesPendientes(
-            prev => ({
-              ...prev,
-              [tareaId]:
-                (prev[tareaId] || 0) + 1
-            })
+           setTareas(prev =>
+            prev.map(t =>
+              t._id === tareaId
+                ? {
+                    ...t,
+                    mensajesPendientes:
+                      (t.mensajesPendientes || 0) + 1
+                  }
+                : t
+            )
           );
         }
       );
@@ -637,14 +645,17 @@ export default function TareasScreen({route}) {
                 style={styles.chatButton}
                 onPress={() => {
 
-                  setMensajesPendientes(
-                    prev => ({
-                      ...prev,
-                      [item._id]: 0,
-                    })
+                  setTareas(prev =>
+                    prev.map(t =>
+                      t._id === item._id
+                        ? {
+                            ...t,
+                            mensajesPendientes: 0
+                          }
+                        : t
+                    )
                   );
-
-                  navigation.navigate(
+                   navigation.navigate(
                     'TareaDetalle',
                     {
                       tareaId: item._id,
@@ -654,6 +665,8 @@ export default function TareasScreen({route}) {
               >
                 <Text style={styles.buttonText}>
                   CHAT
+                </Text>
+                
                 {item.mensajesPendientes > 0 && (
                   <View style={styles.badge}>
                     <Text style={styles.badgeText}>
@@ -661,7 +674,6 @@ export default function TareasScreen({route}) {
                     </Text>
                   </View>
                 )}
-                </Text>
 
               </TouchableOpacity>
                 </View>
