@@ -100,7 +100,7 @@ export default function TareasScreen({route}) {
           
         } catch (error) {
           
-          console.log(error);
+          console.log("error",error);
           
         Alert.alert(
           'Error',
