@@ -136,6 +136,20 @@ const obtenerMensajes =
 
     try {
 
+      await MensajeChat.updateMany(
+          {
+            tarea: tareaId,
+            leidoPor: {
+              $ne: req.user.id
+            }
+          },
+          {
+            $addToSet: {
+              leidoPor: req.user.id
+            }
+          }
+          );
+          
       const mensajes =
         await MensajeChat
           .find({
@@ -162,6 +176,9 @@ const obtenerMensajes =
           'Error obteniendo mensajes',
       });
     }
+
+    
+          
   };
 
 
@@ -202,17 +219,15 @@ const enviarMensaje =
 
           mensaje,
 
-          usuarioId:
-            usuario._id,
+          usuarioId: usuario._id,
 
-          nombreUsuario:
-            usuario.nombre,
+          nombreUsuario: usuario.nombre,
 
-          rolUsuario:
-            usuario.rol,
+          rolUsuario: usuario.rol,
 
-          turno:
-            usuario.turnoActual,
+          turno: usuario.turnoActual,
+
+          leidoPor: [usuario._id],
         });
 
       global.io

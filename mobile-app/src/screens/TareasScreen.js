@@ -654,10 +654,10 @@ export default function TareasScreen({route}) {
               >
                 <Text style={styles.buttonText}>
                   CHAT
-                {mensajesPendientes[item._id] > 0 && (
+                {item.mensajesPendientes > 0 && (
                   <View style={styles.badge}>
                     <Text style={styles.badgeText}>
-                      {mensajesPendientes[item._id]}
+                      {item.mensajesPendientes}
                     </Text>
                   </View>
                 )}

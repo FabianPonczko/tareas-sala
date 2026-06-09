@@ -66,6 +66,7 @@
 // // =====================
 // // ACTUALIZAR ESTADO
 // // =====================
+
 const actualizarEstado = async (req, res) => {
   try {
     const { estado } = req.body;
@@ -166,6 +167,8 @@ const {
 
 const Usuario =
   require('../models/Usuario');
+
+const MensajeChat = require('../models/MensajeChat.js')
 
 const crearTarea = async (req, res) => {
   try {
@@ -271,39 +274,104 @@ const crearTarea = async (req, res) => {
   }
 };
 
-const obtenerTareas =
-  async (req, res) => {
-    try {
-      const tareas =
-        await TareaAsignada.find()
-          .populate({
-            path: 'tarea',
-            populate: [
-              {
-                path: 'sabor',
-              },
-              {
-                path: 'tanque',
-              },
-              {
-                path: 'unidades',
-              },
-              {
-                path: 'disolutor',
-              },
-            ],
-          })
-          .sort({
-            createdAt: -1,
-          });
+// const obtenerTareas =
+//   async (req, res) => {
+//     try {
+//       const tareas =
+//         await TareaAsignada.find()
+//           .populate({
+//             path: 'tarea',
+//             populate: [
+//               {
+//                 path: 'sabor',
+//               },
+//               {
+//                 path: 'tanque',
+//               },
+//               {
+//                 path: 'unidades',
+//               },
+//               {
+//                 path: 'disolutor',
+//               },
+//             ],
+//           })
+//           .sort({
+//             createdAt: -1,
+//           });
 
-      res.json(tareas);
-    } catch (error) {
-      res.status(500).json({
-        message: 'Error obteniendo tareas',
-      });
-    }
-  };
+//       res.json(tareas);
+//     } catch (error) {
+//       res.status(500).json({
+//         message: 'Error obteniendo tareas',
+//       });
+//     }
+//   };
+
+  const obtenerTareas = async (req, res) => {
+  try {
+
+    const tareas =
+      await TareaAsignada.find()
+        .populate({
+          path: 'tarea',
+          populate: [
+            { path: 'sabor' },
+            { path: 'tanque' },
+            { path: 'unidades' },
+            { path: 'disolutor' },
+          ],
+        })
+        .sort({
+          createdAt: -1,
+        });
+
+    const tareasConContador =
+      await Promise.all(
+
+        tareas.map(
+          async tarea => {
+
+            const noLeidos =
+              await MensajeChat.countDocuments({
+
+                tarea: tarea._id,
+
+                eliminado: false,
+
+                usuarioId: {
+                  $ne: req.user.id
+                },
+
+                leidoPor: {
+                  $ne: req.user.id
+                }
+              });
+
+            return {
+              ...tarea.toObject(),
+
+              mensajesPendientes:
+                noLeidos
+            };
+          }
+        )
+      );
+
+    res.json(
+      tareasConContador
+    );
+
+  } catch (error) {
+
+    console.log(error);
+
+    res.status(500).json({
+      message:
+        'Error obteniendo tareas',
+    });
+  }
+};
 
   // =====================================
 // OBTENER TAREAS ACTIVAS
@@ -352,7 +420,7 @@ const obtenerTareasActivas =
     }
   };
 module.exports = {
-   crearTarea,
+  crearTarea,
   obtenerTareas,
   actualizarEstado,
   actualizarSap,
