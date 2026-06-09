@@ -131,55 +131,52 @@ const Usuario =
 // OBTENER MENSAJES
 // =====================================
 
-const obtenerMensajes =
-  async (req, res) => {
+const obtenerMensajes = async (req, res) => {
+  try {
 
-    try {
+    const tareaId = req.params.tareaId;
 
-      await MensajeChat.updateMany(
-          {
-            tarea: tareaId,
-            leidoPor: {
-              $ne: req.user.id
-            }
-          },
-          {
-            $addToSet: {
-              leidoPor: req.user.id
-            }
-          }
-          );
-          
-      const mensajes =
-        await MensajeChat
-          .find({
-            tarea:
-              req.params
-                .tareaId,
-
-            eliminado: false,
-          })
-          .sort({
-            createdAt: 1,
-          });
-
-      res.json(
-        mensajes
-      );
-
-    } catch (error) {
-
-      console.log(error);
-
-      res.status(500).json({
-        message:
-          'Error obteniendo mensajes',
-      });
+    await MensajeChat.updateMany(
+  {
+    tarea: tareaId,
+    usuarioId: {
+      $ne: req.user.id
+    },
+    leidoPor: {
+      $ne: req.user.id
     }
+  },
+  {
+    $addToSet: {
+      leidoPor: req.user.id
+    }
+  }
+);
 
-    
-          
-  };
+    const mensajes =
+      await MensajeChat.find({
+        tarea: tareaId,
+        eliminado: false,
+      })
+      .sort({
+        createdAt: 1,
+      });
+
+    res.json(mensajes);
+
+  } catch (error) {
+
+    console.log(
+      'ERROR OBTENER MENSAJES:',
+      error
+    );
+
+    res.status(500).json({
+      message:
+        'Error obteniendo mensajes',
+    });
+  }
+};
 
 
 // =====================================
