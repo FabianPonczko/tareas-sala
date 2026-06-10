@@ -126,6 +126,7 @@ console.log("ids",idsTareas)
     obtenerTareas();
 
     const manejarNuevaTarea = (nuevaTarea) => {
+      console.log("LLEGÓ NUEVA TAREA", nuevaTarea);
       setTareas((prev) => {
         const listaActualizada = [nuevaTarea, ...prev];
         // Calculamos usando el arreglo combinado resultante
@@ -138,6 +139,7 @@ console.log("ids",idsTareas)
 
     // Limpieza del evento para evitar duplicados al desmontar o re-renderizar
     return () => {
+       console.log("Home desmontado");
       socket.off('nuevaTarea', manejarNuevaTarea);
     };
   }, [usuario, token]); // Añadidas dependencias clave

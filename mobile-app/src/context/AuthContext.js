@@ -77,6 +77,7 @@ export const AuthProvider = ({
           storedToken &&
           storedUser
         ) {
+          const parsedUser = JSON.parse(storedUser);
           setToken(
             storedToken
           );
@@ -86,6 +87,7 @@ export const AuthProvider = ({
               storedUser
             )
           );
+          connectSocket(storedToken, parsedUser);
 
           axios.defaults.headers.common.Authorization =
             `Bearer ${storedToken}`;
@@ -142,7 +144,7 @@ export const AuthProvider = ({
       }
       setToken(token);
       setUsuario(usuario);
-      // connectSocket(token);
+      connectSocket(token,usuario);
 
       axios.defaults.headers.common.Authorization =
         `Bearer ${token}`;

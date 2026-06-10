@@ -37,41 +37,24 @@ export const socket = io(
 // CONECTAR SOCKET
 // =====================================
 
-export const connectSocket =
-  (
-    token,
-    usuario
-  ) => {
+export const connectSocket = (token, usuario) => {
 
-    // JWT
-    socket.auth = {
-      token,
-    };
+  socket.auth = { token };
 
-    if (
-      !socket.connected
-    ) {
+  socket.connect();
 
-      socket.connect();
+  socket.on("connect", () => {
+  console.log("✅ Socket conectado:", socket.id);
 
-      socket.once(
-        'connect',
-        () => {
+  if (usuario?.turnoActual) {
+    socket.emit(
+      "joinShiftRoom",
+      usuario.turnoActual
+    );
+  }
+});
 
-          console.log(
-            '✅ Socket conectado:',
-            socket.id
-          );
-
-          // REGISTRAR USUARIO
-          socket.emit(
-            'registrar_usuario',
-            usuario
-          );
-        }
-      );
-    }
-  };
+};
 
 
 // =====================================

@@ -169,10 +169,9 @@ const crearTarea = async (req, res) => {
         ],
       });
 
-    global.io.emit(
-      'nuevaTarea',
-      populated
-    );
+    global.io
+  .to(`shift_${turno}`)
+  .emit("nuevaTarea", populated);
 
 
     // crear tarea... y push notificaciones
