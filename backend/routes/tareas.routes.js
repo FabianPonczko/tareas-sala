@@ -32,7 +32,7 @@ router.get(
 
 
 router.post(
-  '/',
+  '/',auth,
   crearTarea
 );
 

@@ -54,12 +54,12 @@ export default function HomeScreen() {
               },
             }
           );
-
+        
           setTareas(
             response.data
           );
 
-         
+         console.log("response.data" , response)
           
         } catch (error) {
           
@@ -68,47 +68,42 @@ export default function HomeScreen() {
        
 
       } finally {
-        console.log("tareas",tareas)
         
         
       }
     };
-
-  // =====================================
-  // CAMBIAR TURNO
-  // =====================================
-
-  const cambiarTurno =
+    
+    // =====================================
+    // CAMBIAR TURNO
+    // =====================================
+    
+    const cambiarTurno =
     async (turno) => {
       await actualizarTurno(
         turno
       );
     };
-
+    
     useEffect(() => {
       obtenerTareas()
-       socket.on(
-              'nuevaTarea',
-              (nuevaTarea) => {
-                console.log("llego una tarea",nuevaTarea)
-                 setTareas(prev =>
-          prev.map(t =>
-            t._id === nuevaTarea._id
-              ? {
-                  ...t,
-                  tareasPendientes:
-                    (t.tareasPendientes || 0) + 1
-                }
-              : t
-          )
-        );
-              }
+      socket.on(
+        'nuevaTarea',
+        (nuevaTarea) => {
+          console.log("llego una tarea",nuevaTarea)
+          setTareas((prev) => [
+            nuevaTarea,
+            ...prev,
+          ]);
+      }
             );
-    }, []);
+          }, []);
+          
+          console.log("tareas",tareas)
 
 
-  // =====================================
-  // UI
+          
+          // =====================================
+          // UI
   // =====================================
 
   return (
