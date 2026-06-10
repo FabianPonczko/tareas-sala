@@ -12,6 +12,7 @@ const {
   actualizarEstado,
    obtenerTareasActivas,
    actualizarSap,
+   marcarLeidas
   // crearTareaAsignada,
   // obtenerTareasAsignadas,
   // obtenerTareasPrefijadas,

@@ -65,8 +65,9 @@ export default function HomeScreen() {
     }
   };
 
+    
   const marcarTareasComoLeidas = async()=>{
-    const idsTareas = tareasNoleidas.map(t=>t.id)
+    const idsTareas = tareas.map(t=>t.id)
 
     // Si no hay tareas nuevas, navegamos directamente sin llamar a la API
   if (tareasNoleidas.length === 0) {
@@ -129,7 +130,7 @@ export default function HomeScreen() {
       
       
       
-      
+      console.log("tareasNleidas",tareasNoleidas)
 
           
           // =====================================
