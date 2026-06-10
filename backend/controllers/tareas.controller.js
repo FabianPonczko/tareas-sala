@@ -393,6 +393,7 @@ const obtenerTareasActivas =
 // Ejemplo rápido de lo que debería procesar tu Backend:
 const marcarLeidas =  async (req, res) => {
   const { tareasIds } = req.body;
+  
   try {
     await Tarea.updateMany(
       { _id: { $in: tareasIds } },
@@ -400,7 +401,7 @@ const marcarLeidas =  async (req, res) => {
     );
     res.status(200).json({ msg: "Tareas marcadas como leídas" });
   } catch (error) {
-    res.status(500).send("Error del servidor");
+    res.status(500).send("Error del servidor",error.message);
   }
 };
 
