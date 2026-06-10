@@ -310,6 +310,8 @@ const crearTarea = async (req, res) => {
 
   const obtenerTareas = async (req, res) => {
   try {
+
+    const tareaId = req.params.tareaId;
     await TareaAsignada.updateMany(
       {
         tarea: tareaId,
@@ -362,12 +364,29 @@ const crearTarea = async (req, res) => {
                   $ne: req.user.id
                 }
               });
+              const tareasNoLeidas =
+              await TareaAsignada.countDocuments({
+
+                tarea: tarea._id,
+
+                eliminado: false,
+
+                usuarioId: {
+                  $ne: req.user.id
+                },
+
+                leidoPor: {
+                  $ne: req.user.id
+                }
+              });
 
             return {
               ...tarea.toObject(),
 
               mensajesPendientes:
-                noLeidos
+                noLeidos ,
+              tareasPendientes:
+                tareasNoLeidas
             };
           }
         )
