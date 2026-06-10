@@ -43,6 +43,12 @@ router.put(
 );
 
 router.put(
+  '/marcar-leidas',auth,
+  marcarLeidas
+)
+
+
+router.put(
   '/:id/sap',
   auth,
   actualizarSap

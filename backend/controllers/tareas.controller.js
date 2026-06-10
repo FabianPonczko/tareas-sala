@@ -389,9 +389,25 @@ const obtenerTareasActivas =
       });
     }
   };
+
+// Ejemplo rápido de lo que debería procesar tu Backend:
+const marcarLeidas =  async (req, res) => {
+  const { tareasIds } = req.body;
+  try {
+    await Tarea.updateMany(
+      { _id: { $in: tareasIds } },
+      { $addToSet: { leidopor: req.usuario._id } } // Agrega el ID del usuario al arreglo sin duplicar
+    );
+    res.status(200).json({ msg: "Tareas marcadas como leídas" });
+  } catch (error) {
+    res.status(500).send("Error del servidor");
+  }
+};
+
 module.exports = {
   crearTarea,
   obtenerTareas,
+  marcarLeidas,
   actualizarEstado,
   actualizarSap,
   obtenerTareasActivas,

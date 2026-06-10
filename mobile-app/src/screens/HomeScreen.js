@@ -37,69 +37,99 @@ export default function HomeScreen() {
   const [tareas, setTareas] =
     useState([]);
 
-  
+    const [tareasNoleidas,setTareasNoleidas]=useState(null)
+    
+     // Función reutilizable que calcula las tareas no leídas basándose en un arreglo de tareas específico
+  const calcularNoleidas = (listaTareas) => {
+    const hoy = new Date().toLocaleDateString('sv-SE');
+    return listaTareas.filter(t =>
+      t.leidopor !== usuario?._id &&
+      t.turno === usuario?.turnoActual &&
+      t.fecha?.split("T")[0] === hoy &&
+      t.estado !== "FINALIZADO"
+    ).length;
+  };
 
-    const obtenerTareas =
-    async () => {
+    const obtenerTareas = async () => {
+    try {
+      const response = await axios.get(API_URL, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       
-      try {
-        
-        const response =
-        await axios.get(
-          API_URL,
-          {
-            headers: {
-              Authorization:
-              `Bearer ${token}`,
-              },
-            }
-          );
-        
-          setTareas(
-            response.data
-          );
+      const nuevasTareas = response.data;
+      setTareas(nuevasTareas);
+      // Calculamos usando los datos frescos de la API
+      setTareasNoleidas(calcularNoleidas(nuevasTareas));
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
 
-         console.log("response.data" , response)
-          
-        } catch (error) {
-          
-          console.log("error",error);
-          
-       
+  const marcarTareasComoLeidas = async()=>{
+    const idsTareas = tareasNoleidas.map(t=>t.id)
 
-      } finally {
-        
-        
-      }
+    // Si no hay tareas nuevas, navegamos directamente sin llamar a la API
+  if (tareasNoleidas.length === 0) {
+    navigation.navigate('Tareas');
+    return;
+  }
+   
+    try {
+    // 3. Enviamos los IDs al backend (ajusta la URL según tu endpoint de la API)
+    await axios.put(
+      `${API_URL}/marcar-leidas`, 
+      { tareasIds: idsTareas }, 
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+
+    // 4. Limpiamos el contador local y navegamos
+    setTareasNoleidas(0);
+    navigation.navigate('Tareas');
+
+  } catch (error) {
+    console.log("Error al marcar tareas como leídas:", error);
+    // Igualmente navegamos para no trabar la experiencia del usuario
+    navigation.navigate('Tareas');
+  }
+
+  };
+
+      
+      // =====================================
+      // CAMBIAR TURNO
+      // =====================================
+      
+      const cambiarTurno =
+      async (turno) => {
+        await actualizarTurno(
+          turno
+        );
+      };
+      
+  useEffect(() => {
+    obtenerTareas();
+
+    const manejarNuevaTarea = (nuevaTarea) => {
+      setTareas((prev) => {
+        const listaActualizada = [nuevaTarea, ...prev];
+        // Calculamos usando el arreglo combinado resultante
+        setTareasNoleidas(calcularNoleidas(listaActualizada));
+        return listaActualizada;
+      });
     };
-    
-    // =====================================
-    // CAMBIAR TURNO
-    // =====================================
-    
-    const cambiarTurno =
-    async (turno) => {
-      await actualizarTurno(
-        turno
-      );
-    };
-    
-    useEffect(() => {
-      obtenerTareas()
-      socket.on(
-        'nuevaTarea',
-        (nuevaTarea) => {
-          console.log("llego una tarea",nuevaTarea)
-          setTareas((prev) => [
-            nuevaTarea,
-            ...prev,
-          ]);
-      }
-            );
-          }, []);
-          
-          console.log("tareas",tareas)
 
+    socket.on('nuevaTarea', manejarNuevaTarea);
+
+    // Limpieza del evento para evitar duplicados al desmontar o re-renderizar
+    return () => {
+      socket.off('nuevaTarea', manejarNuevaTarea);
+    };
+  }, [usuario, token]); // Añadidas dependencias clave
+      
+      
+      
+      
+      
 
           
           // =====================================
@@ -282,11 +312,7 @@ export default function HomeScreen() {
         {/* TAREAS */}
         <TouchableOpacity
           style={styles.actionBtn}
-          onPress={() =>
-            navigation.navigate(
-              'Tareas'
-            )
-          }
+          onPress={marcarTareasComoLeidas}
         >
           <Text
             style={
@@ -295,10 +321,10 @@ export default function HomeScreen() {
           >
             Ver tareas
           </Text>
-          {tareas.tareasPendientes > 0 &&
+          {tareasNoleidas > 0 &&
           <View style={styles.badge}>
             <Text style={styles.badgeText}>
-              {tareas.tareasPendientes}
+              {tareasNoleidas}
             </Text>
           </View>
           }
