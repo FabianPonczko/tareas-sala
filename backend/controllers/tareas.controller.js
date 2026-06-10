@@ -364,6 +364,7 @@ const crearTarea = async (req, res) => {
                   $ne: req.user.id
                 }
               });
+              
               const tareasNoLeidas =
               await TareaAsignada.countDocuments({
 

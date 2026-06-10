@@ -1,5 +1,4 @@
 import React , {useEffect,useState} from 'react';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   View,
   Text,
@@ -14,6 +13,12 @@ import { useAuth } from '../context/AuthContext';
 
 import { socket } from '../services/socket';
 
+
+import axios from 'axios';
+
+const API_URL =
+  'https://tareas-sala.onrender.com/api/tareas';
+
 // =====================================
 // HOME SCREEN
 // =====================================
@@ -24,6 +29,7 @@ export default function HomeScreen() {
 
   const {
     usuario,
+    token,
     logout,
     actualizarTurno,
   } = useAuth();
@@ -31,6 +37,42 @@ export default function HomeScreen() {
   const [tareas, setTareas] =
     useState([]);
 
+  
+
+    const obtenerTareas =
+    async () => {
+      
+      try {
+        
+        const response =
+        await axios.get(
+          API_URL,
+          {
+            headers: {
+              Authorization:
+              `Bearer ${token}`,
+              },
+            }
+          );
+
+          setTareas(
+            response.data
+          );
+
+         
+          
+        } catch (error) {
+          
+          console.log("error",error);
+          
+       
+
+      } finally {
+        console.log("tareas",tareas)
+        
+        
+      }
+    };
 
   // =====================================
   // CAMBIAR TURNO
@@ -44,10 +86,11 @@ export default function HomeScreen() {
     };
 
     useEffect(() => {
+      obtenerTareas()
        socket.on(
               'nuevaTarea',
               (nuevaTarea) => {
-                
+                console.log("llego una tarea",nuevaTarea)
                  setTareas(prev =>
           prev.map(t =>
             t._id === nuevaTarea._id
