@@ -401,7 +401,7 @@ const marcarLeidas =  async (req, res) => {
     );
     res.status(200).json({ msg: "Tareas marcadas como leídas" });
   } catch (error) {
-    res.status(500).send("Error del servidor",error.message);
+    res.status(500).send("Error del servidor",error);
   }
 };
 
