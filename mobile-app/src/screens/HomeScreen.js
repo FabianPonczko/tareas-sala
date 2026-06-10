@@ -1,4 +1,4 @@
-import React from 'react';
+import React , {useEffect,useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   View,
@@ -12,6 +12,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import { useAuth } from '../context/AuthContext';
 
+import { socket } from '../services/socket';
 
 // =====================================
 // HOME SCREEN
@@ -27,6 +28,9 @@ export default function HomeScreen() {
     actualizarTurno,
   } = useAuth();
 
+  const [tareas, setTareas] =
+    useState([]);
+
 
   // =====================================
   // CAMBIAR TURNO
@@ -39,7 +43,27 @@ export default function HomeScreen() {
       );
     };
 
-   
+    useEffect(() => {
+       socket.on(
+              'nuevaTarea',
+              (nuevaTarea) => {
+                
+                 setTareas(prev =>
+          prev.map(t =>
+            t._id === nuevaTarea._id
+              ? {
+                  ...t,
+                  tareasPendientes:
+                    (t.tareasPendientes || 0) + 1
+                }
+              : t
+          )
+        );
+              }
+            );
+    }, []);
+
+
   // =====================================
   // UI
   // =====================================
@@ -233,6 +257,13 @@ export default function HomeScreen() {
           >
             Ver tareas
           </Text>
+          {tareas.tareasPendientes > 0 &&
+          <View style={styles.badge}>
+            <Text style={styles.badgeText}>
+              {tareas.tareasPendientes}
+            </Text>
+          </View>
+          }
         </TouchableOpacity>
 
 
@@ -433,4 +464,23 @@ const styles =
       fontWeight: 'bold',
       fontSize: 16,
     },
+    badge: {
+  position: 'absolute',
+  top: -8,
+  right: -8,
+  backgroundColor: 'red',
+  borderRadius: 10,
+  minWidth: 20,
+  height: 20,
+  justifyContent: 'center',
+  alignItems: 'center',
+  paddingHorizontal: 4,
+},
+
+badgeText: {
+  color: '#fff',
+  fontSize: 12,
+  fontWeight: 'bold',
+},
+
   });

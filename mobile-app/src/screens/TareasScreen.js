@@ -157,26 +157,23 @@ export default function TareasScreen({route}) {
   socket.on(
     'mensajeNoLeido',
     ({ tareaId, autorId }) => {
-         console.log("autorId", autorId)
-         console.log("usuario_id", usuario._id)
-         Alert.alert("autorId", autorId,"usuario_id", usuario._id)
-       if (
-      String(autorId) ===
-      String(usuario._id)
-    ) {
-      return;
-    }
-           setTareas(prev =>
-            prev.map(t =>
-              t._id === tareaId
-                ? {
-                    ...t,
-                    mensajesPendientes:
-                      (t.mensajesPendientes || 0) + 1
-                  }
-                : t
-            )
-          );
+      if (
+        String(autorId) ===
+        String(usuario._id)
+      ) {
+        return;
+      }
+          setTareas(prev =>
+          prev.map(t =>
+            t._id === tareaId
+              ? {
+                  ...t,
+                  mensajesPendientes:
+                    (t.mensajesPendientes || 0) + 1
+                }
+              : t
+          )
+        );
         }
       );
       

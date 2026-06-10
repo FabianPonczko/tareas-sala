@@ -310,7 +310,22 @@ const crearTarea = async (req, res) => {
 
   const obtenerTareas = async (req, res) => {
   try {
-
+    await TareaAsignada.updateMany(
+      {
+        tarea: tareaId,
+        usuarioId: {
+          $ne: req.user.id
+        },
+        leidoPor: {
+          $ne: req.user.id
+        }
+      },
+      {
+        $addToSet: {
+          leidoPor: req.user.id
+        }
+      }
+    );
     const tareas =
       await TareaAsignada.find()
         .populate({

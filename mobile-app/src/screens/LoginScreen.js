@@ -44,10 +44,13 @@ export default function LoginScreen() {
   const [loading, setLoading] =
     useState(false);
 
-
+  const [respuesta, setRespuesta] =
+    useState(null);
   // =====================================
   // LOGIN
   // =====================================
+
+
 
   const handleLogin =
     async () => {
@@ -66,7 +69,9 @@ export default function LoginScreen() {
 
         setLoading(true);
 
-        await login({email,password,});
+        const respuesta = await login({email,password,});
+        
+        setRespuesta(respuesta);
 
       } catch (error) {
 
@@ -82,10 +87,10 @@ export default function LoginScreen() {
     };
 
     
-
   // =====================================
   // UI
   // =====================================
+
 
   return (
     <View style={styles.container}>
@@ -101,7 +106,7 @@ export default function LoginScreen() {
 
         <TextInput
           placeholder="Email"
-          placeholderTextColor="#666"
+          placeholderTextColor="#DDD"
           style={styles.input}
           
           autoCapitalize="none"
@@ -121,6 +126,8 @@ export default function LoginScreen() {
 
         <TextInput
           style={styles.input}
+           placeholder="Contraseña"
+          placeholderTextColor="#DDD"
           secureTextEntry={true}
           autoCapitalize="none"
           autoCorrect={false}
@@ -130,8 +137,7 @@ export default function LoginScreen() {
             setPassword
           }
         />
-
-
+        <Text style={styles.message}>{respuesta?.message}</Text>
         {/* LOGIN BUTTON */}
 
         <TouchableOpacity
@@ -268,5 +274,8 @@ const styles =
       color: '#007AFF',
 
       fontWeight: 'bold',
+    },
+    message: {   
+      color: 'red',
     },
   });

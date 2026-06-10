@@ -187,6 +187,16 @@ const tareaAsignadaSchema =
           mongoose.Schema.Types.ObjectId,
         ref: 'Usuario',
       },
+      
+      // Usuarios que leyeron la tarea
+      leidoPor: [
+        {
+          type:
+            mongoose.Schema.Types.ObjectId,
+
+          ref: 'Usuario',
+        },
+      ],
     },
     {
       timestamps: true,
