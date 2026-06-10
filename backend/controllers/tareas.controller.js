@@ -391,17 +391,30 @@ const obtenerTareasActivas =
   };
 
 // Ejemplo rápido de lo que debería procesar tu Backend:
-const marcarLeidas =  async (req, res) => {
-  const { tareasIds } = req.body;
-  
+const marcarLeidas = async (req, res) => {
   try {
+    const { tareasIds } = req.body;
+
     await TareaAsignada.updateMany(
-      { _id: { $in: tareasIds } },
-      { $addToSet: { leidoPor:req.usuario._id } } // Agrega el ID del usuario al arreglo sin duplicar
+      {
+        _id: { $in: tareasIds },
+      },
+      {
+        $addToSet: {
+          leidoPor: req.user.id,
+        },
+      }
     );
-    res.status(200).json({ msg: "Tareas marcadas como leídas" });
+
+    res.json({
+      ok: true,
+    });
+
   } catch (error) {
-    res.status(500).send("Error del servidor");
+    console.log(error);
+    res.status(500).json({
+      message: error.message,
+    });
   }
 };
 

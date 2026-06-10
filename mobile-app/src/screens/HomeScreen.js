@@ -39,9 +39,10 @@ export default function HomeScreen() {
 
     const [tareasNoleidas,setTareasNoleidas]=useState(null)
     
+    const hoy = new Date().toLocaleDateString("sv-SE");
+
      // Función reutilizable que calcula las tareas no leídas basándose en un arreglo de tareas específico
   const calcularNoleidas = (listaTareas) => {
-  const hoy = new Date().toLocaleDateString("sv-SE");
 
   return listaTareas.filter(t =>
     !t.leidoPor?.some(
@@ -70,13 +71,24 @@ export default function HomeScreen() {
 
     
   const marcarTareasComoLeidas = async()=>{
-    const idsTareas = tareas.map(t=>t._id)
+   const idsTareas = tareas
+  .filter(
+    t =>
+      t.turno === usuario?.turnoActual &&
+      t.fecha?.split("T")[0] === hoy &&
+      t.estado !== "FINALIZADO" &&
+      !t.leidoPor?.some(
+        id => String(id) === String(usuario?._id)
+      )
+  )
+  .map(t => t._id);
+
 console.log("ids",idsTareas)
     // Si no hay tareas nuevas, navegamos directamente sin llamar a la API
-  if (tareasNoleidas?.length === 0) {
-    navigation.navigate('Tareas');
-    return;
-  }
+  if (tareasNoleidas === 0) {
+  navigation.navigate("Tareas");
+  return;
+}
    
     try {
     // 3. Enviamos los IDs al backend (ajusta la URL según tu endpoint de la API)
