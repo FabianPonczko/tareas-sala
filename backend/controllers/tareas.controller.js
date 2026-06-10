@@ -397,7 +397,7 @@ const marcarLeidas =  async (req, res) => {
   try {
     await TareaAsignada.updateMany(
       { _id: { $in: tareasIds } },
-      { $addToSet: { leidopor:[ req.usuario._id] } } // Agrega el ID del usuario al arreglo sin duplicar
+      { $addToSet: { leidoPor:req.usuario._id } } // Agrega el ID del usuario al arreglo sin duplicar
     );
     res.status(200).json({ msg: "Tareas marcadas como leídas" });
   } catch (error) {

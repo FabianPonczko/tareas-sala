@@ -41,14 +41,17 @@ export default function HomeScreen() {
     
      // Función reutilizable que calcula las tareas no leídas basándose en un arreglo de tareas específico
   const calcularNoleidas = (listaTareas) => {
-    const hoy = new Date().toLocaleDateString('sv-SE');
-    return listaTareas.filter(t =>
-      t.leidopor !== usuario?._id &&
-      t.turno === usuario?.turnoActual &&
-      t.fecha?.split("T")[0] === hoy &&
-      t.estado !== "FINALIZADO"
-    ).length;
-  };
+  const hoy = new Date().toLocaleDateString("sv-SE");
+
+  return listaTareas.filter(t =>
+    !t.leidoPor?.some(
+      id => String(id) === String(usuario?._id)
+    ) &&
+    t.turno === usuario?.turnoActual &&
+    t.fecha?.split("T")[0] === hoy &&
+    t.estado !== "FINALIZADO"
+  ).length;
+};
 
     const obtenerTareas = async () => {
     try {
