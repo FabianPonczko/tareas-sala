@@ -43,6 +43,7 @@ export default function ChatBox({
   tareaId,
   token,
   usuario,
+  turno
 }) {
 
   const [mensajes, setMensajes] =
@@ -127,6 +128,7 @@ export default function ChatBox({
 
     // Entrar room tarea
     socket.emit(
+      console.log("entro en chat"),
       'joinTaskRoom',
       tareaId
     );
@@ -194,8 +196,10 @@ export default function ChatBox({
     return () => {
       
       socket.emit(
+        console.log("salgo del chat"),
         'leaveTaskRoom',
-        tareaId
+        tareaId,
+        turno
       );
 
       socket.off(

@@ -483,7 +483,7 @@ export default function TareaDetalleScreen({
   route,
 }) {
 
-  const { tareaId } =
+  const { tareaId ,turno} =
     route.params;
 
   const {
@@ -491,12 +491,14 @@ export default function TareaDetalleScreen({
     usuario,
   } = useAuth();
 
+ 
   return (
     <View style={styles.container}>
       <ChatBox
         tareaId={tareaId}
         token={token}
         usuario={usuario}
+        turno={turno}
       />
     </View>
   );

@@ -156,7 +156,7 @@ export default function TareasScreen({route}) {
   );
 
   socket.on('leaveTaskRoom', (tareaId) => {
-        console.log("leaveTaskRoom")
+        
        setTareas(prev =>
                     prev.map(t =>
                       t._id === tareaId._id
@@ -169,7 +169,7 @@ export default function TareasScreen({route}) {
                   )
                 }
       );
-      
+
   socket.on(
     'mensajeNoLeido',
     ({ tareaId, autorId }) => {
@@ -674,6 +674,7 @@ export default function TareasScreen({route}) {
                     'TareaDetalle',
                     {
                       tareaId: item._id,
+                      turno:usuario?.turnoActual,
                     }
                   );
                 }}
