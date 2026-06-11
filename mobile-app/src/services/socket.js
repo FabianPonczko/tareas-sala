@@ -38,25 +38,25 @@ export const socket = io(
 // =====================================
 
 export const connectSocket = (token, usuario) => {
-
   socket.auth = { token };
 
-  socket.connect();
+  socket.off("connect");
 
   socket.on("connect", () => {
-  console.log("✅ Socket conectado:", socket.id);
+    console.log("✅ Socket conectado:", socket.id);
 
-  if (usuario?.turnoActual) {
-    socket.emit(
-      "joinShiftRoom",
-      usuario.turnoActual
-    );
+    if (usuario?.turnoActual) {
+      socket.emit(
+        "joinShiftRoom",
+        usuario.turnoActual
+      );
+    }
+  });
+
+  if (!socket.connected) {
+    socket.connect();
   }
-});
-
 };
-
-
 // =====================================
 // DESCONECTAR SOCKET
 // =====================================
