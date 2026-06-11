@@ -154,6 +154,22 @@ export default function TareasScreen({route}) {
       );
     }
   );
+
+  socket.on('leaveTaskRoom', (tareaId) => {
+        console.log("leaveTaskRoom")
+       setTareas(prev =>
+                    prev.map(t =>
+                      t._id === tareaId._id
+                        ? {
+                            ...t,
+                            mensajesPendientes: 0
+                          }
+                        : t
+                    )
+                  )
+                }
+      );
+      
   socket.on(
     'mensajeNoLeido',
     ({ tareaId, autorId }) => {
@@ -177,6 +193,8 @@ export default function TareasScreen({route}) {
         }
       );
       
+      
+
       return () => {
      
         socket.off(

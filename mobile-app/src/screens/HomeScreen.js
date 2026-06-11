@@ -119,7 +119,7 @@ console.log("ids",idsTareas)
       async (turno) => {
         await actualizarTurno(
           turno
-        );
+        );r
       };
       
   useEffect(() => {
@@ -130,7 +130,7 @@ console.log("ids",idsTareas)
       setTareas((prev) => {
         const listaActualizada = [nuevaTarea, ...prev];
         // Calculamos usando el arreglo combinado resultante
-        setTareasNoleidas(calcularNoleidas(listaActualizada));
+        setTareasNoleidas(calcularNoleidas(listaActualizada))
         return listaActualizada;
       });
     };
