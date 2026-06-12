@@ -235,7 +235,9 @@ const enviarMensaje =
           nuevoMensaje
         );
         
-      global.io.emit(
+      global.io
+        .except(`task_${tarea}`)
+        .emit(
           'mensajeNoLeido',
         {
           tareaId: tarea,

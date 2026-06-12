@@ -175,18 +175,12 @@ const configureSocket = (
         'leaveShiftRoom',
         (
           tareaId,
-          turno
         ) => {
 
           socket.leave(
             `shift_${turno}`
           );
-          io.to(
-            `shift_${tarea.turno}`
-          ).emit(
-            'leaveTaskRoom',
-            tareaId
-          );
+          
           console.log(
             `🚪 ${socket.id} salió de shift_${turno}`
           );
